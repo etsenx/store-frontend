@@ -1,0 +1,19 @@
+.forgot-password {
+  position: relative;
+  float: right;
+  margin-bottom: 10px;
+}
+
+.new-user {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin: 20px auto 0;
+  font-size: 13px;
+  opacity: 0.5;
+}
+
+.new-user a {
+  opacity: 1;
+  color: #fea736;
+}

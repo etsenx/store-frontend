@@ -1,0 +1,48 @@
+.authentication-form {
+  width: 350px;
+  margin: 100px auto;
+  padding: 50px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.authentication-form a {
+  color: #fea736;
+  opacity: 0.5;
+  font-size: 13px;
+}
+
+.authentication-title {
+  margin-bottom: 20px;
+  font-size: 35px;
+}
+
+.authentication-form label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.authentication-form input {
+  display: block;
+  text-indent: 10px;
+  width: 100%;
+  height: 30px;
+  border: 1px solid rgba(216, 216, 216, 1);
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.authentication-button {
+  width: 100%;
+  height: 50px;
+  background-color: #fea736;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+}
+

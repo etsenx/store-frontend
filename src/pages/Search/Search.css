@@ -1,0 +1,86 @@
+.search-page {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.search-page h2 {
+  margin-bottom: 30px;
+  font-weight: 400;
+}
+
+.search-container {
+  width: 100%;
+  display: flex;
+  gap: 70px;
+}
+
+.filter-container {
+  min-width: 18%;
+  display: block;
+  margin-top: 60px;
+}
+
+.filters {
+  margin-left: 40px;
+}
+
+.filter-slider {
+  margin-bottom: 50px;
+}
+
+.slider {
+  width: 100%;
+  height: 5px;
+  background-color: #cdd9ed;
+  margin: 20px 0;
+}
+
+.slider .thumb {
+  width: 15px;
+  height: 15px;
+  cursor: grab;
+  background-color: #fff;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border: 2px solid #cdd9ed;
+  top: -6px;
+}
+
+.thumb-active {
+  border: 2px solid #cdd9ed;
+  border-radius: 100%;
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  -ms-border-radius: 100%;
+  -o-border-radius: 100%;
+}
+
+.filter-category {
+  margin: 50px 0;
+}
+
+.filter-rating {
+  margin: 50px 0;
+}
+
+.filter-rating p {
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+
+.search-products-container {
+  width: 80%;
+  margin: 60px 0;
+}
+
+.search-products-items {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  row-gap: 40px;
+  margin-bottom: 60px;
+}

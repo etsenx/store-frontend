@@ -1,0 +1,10 @@
+.filter-category p {
+  font-size: 18px;
+  font-weight: 300;
+  cursor: pointer;
+  margin: 5px 0;
+}
+
+.filter-category p:active {
+  color: #fea736;
+}

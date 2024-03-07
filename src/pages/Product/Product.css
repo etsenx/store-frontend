@@ -1,0 +1,124 @@
+.product-page {
+  max-width: 1280px;
+  margin: 80px auto;
+}
+
+.product-page-container {
+  display: flex;
+  gap: 80px;
+}
+
+.product-page-title {
+  font-weight: 600;
+}
+
+.product-page-product-id {
+  opacity: 0.5;
+  font-size: 15px;
+  margin-bottom: 30px;
+}
+
+.product-page-rating {
+  margin: 25px 0;
+}
+
+.product-page-rating-text {
+  opacity: 0.5;
+  font-size: 15px;
+}
+
+.product-page-price {
+  margin-top: 20px;
+  font-size: 40px;
+  font-weight: 600;
+}
+
+.product-page-quantity {
+  margin-bottom: 20px;
+}
+
+.product-page-quantity-button {
+  color: white;
+  width: 30px;
+  height: 35px;
+  border: none;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+
+.product-page-quantity-text {
+  margin: 0 20px;
+}
+
+.product-page-add {
+  margin-left: 30px;
+  width: 170px;
+  height: 50px;
+  background-color: #fea736;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
+  -ms-border-radius: 25px;
+  -o-border-radius: 25px;
+}
+
+.product-page-add:disabled {
+  opacity: 0.7;
+}
+
+.product-page-stock{
+  font-size: 22px;
+  font-weight: 600;
+  margin-left: 5px;
+}
+
+.product-page-description-title {
+  margin-top: 20px;
+  font-weight: 600;
+}
+
+.product-page-description-text {
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.product-page-seller-name {
+  font-weight: 600;
+  margin-left: 5px;
+}
+
+.product-page-submit-review {
+  margin-top: 30px;
+  width: 250px;
+  height: 50px;
+  background-color: #fea736;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
+  -ms-border-radius: 25px;
+  -o-border-radius: 25px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.product-page-submit-review:active {
+  opacity: 0.8;
+}
+
+.product-page-review {
+  width: 70%;
+  margin-top: 150px;
+}
+
+.product-page-review-heading {
+  font-size: 30px;
+}

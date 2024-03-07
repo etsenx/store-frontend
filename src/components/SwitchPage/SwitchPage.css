@@ -1,0 +1,27 @@
+.switch-pages-container {
+  text-align: center;
+  max-width: 1280px;
+  margin: 0 auto 20px;
+}
+
+.switch-pages-container button {
+  padding: 0.5rem 0.7rem;
+  border: 1px solid rgba(236, 236, 236, 1);
+  background-color: white;
+  color: #FEBD69;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.switch-pages-container button:hover {
+  cursor: pointer;
+}
+
+.switch-pages-container button:active {
+  background-color: #DEE4E7;
+}
+
+.switch-pages-container button:disabled {
+  color: gray;
+  cursor: default;
+}
