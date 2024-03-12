@@ -1,0 +1,18 @@
+.cart-card {
+  display: flex;
+  padding: 10px 0;
+  width: 800px;
+  height: 80px;
+  border-top: 1px solid rgba(216, 216, 216, 1);
+  border-bottom: 1px solid rgba(216, 216, 216, 1);
+}
+
+.cart-card__product-name {
+  font-weight: 200;
+  font-size: 20px;
+  width: 200px;
+}
+
+.cart-card__qty-button {
+  display: flex;
+}

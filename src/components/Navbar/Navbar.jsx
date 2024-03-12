@@ -62,7 +62,7 @@ function Navbar() {
         </button>
       </div>
       <div className="right-container">
-        <Link>
+        <Link to="/cart">
           Cart <span className="cart-count">0</span>
         </Link>
         <Link
@@ -80,6 +80,7 @@ function Navbar() {
           className="dropdown-content"
           style={isOpen ? { display: "block" } : { display: "none" }}
         >
+          <Link to="/admin/dashboard">Admin Page</Link>
           <Link to="/me/orders">Orders</Link>
           <Link to="/me">Profile</Link>
           <Link>Logout</Link>

@@ -1,8 +1,10 @@
 import "./ProductCard.css";
 
 import { Link } from "react-router-dom";
+// import PropTypes from 'prop-types';
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ReviewStars from "../ReviewStars/ReviewStars";
 
 function ProductCard() {
   return (
@@ -17,11 +19,12 @@ function ProductCard() {
       </div>
       <div className="product-card-bottom-container">
         <div className="product-card-review-container">
-          <FontAwesomeIcon icon="fa-solid fa-star" style={{ color: "#ffda1c" }} />
-          <FontAwesomeIcon icon="fa-solid fa-star" style={{ color: "#ffda1c" }} />
-          <FontAwesomeIcon icon="fa-solid fa-star" style={{ color: "#ffda1c" }} />
-          <FontAwesomeIcon icon="fa-solid fa-star" style={{ color: "#ffda1c" }} />
-          <FontAwesomeIcon icon="fa-solid fa-star" style={{ color: "#ffda1c" }} />
+          {/* <FontAwesomeIcon icon="fa-regular fa-star" style={{ color: "#ffda1c" }} />
+          <FontAwesomeIcon icon="fa-regular fa-star" style={{ color: "#ffda1c" }} />
+          <FontAwesomeIcon icon="fa-regular fa-star" style={{ color: "#ffda1c" }} />
+          <FontAwesomeIcon icon="fa-regular fa-star" style={{ color: "#ffda1c" }} />
+          <FontAwesomeIcon icon="fa-regular fa-star" style={{ color: "#ffda1c" }} /> */}
+          <ReviewStars rating={0} />
           <span className="product-card-text-review">(0 Reviews)</span>
         </div>
         <p className="product-card-price">$315</p>
@@ -30,5 +33,9 @@ function ProductCard() {
     </div>
   );
 }
+
+// ProductCard.propTypes = {
+//   data: PropTypes.object,
+// }
 
 export default ProductCard;
