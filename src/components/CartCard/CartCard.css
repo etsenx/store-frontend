@@ -1,18 +1,37 @@
 .cart-card {
   display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
   padding: 10px 0;
   width: 800px;
-  height: 80px;
+  height: 100px;
   border-top: 1px solid rgba(216, 216, 216, 1);
   border-bottom: 1px solid rgba(216, 216, 216, 1);
 }
 
+.cart-card__image {
+  width: 150px;
+  height: 100%;
+}
+
 .cart-card__product-name {
-  font-weight: 200;
-  font-size: 20px;
+  font-weight: 300;
+  font-size: 18px;
   width: 200px;
 }
 
 .cart-card__qty-button {
   display: flex;
+  align-items: center;
+}
+
+.cart-card__cancel-button {
+  border: none;
+  background: none;
+}
+
+.cart-card__cancel-icon {
+  cursor: pointer;
+  width: 15px;
+  height: 15px;
 }

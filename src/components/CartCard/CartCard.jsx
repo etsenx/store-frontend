@@ -1,9 +1,13 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./CartCard.css";
 
 function CartCard() {
   return (
     <div className="cart-card">
-      <img src="https://dummyimage.com/260x200/000/fff.jpg" />
+      <img
+        src="https://dummyimage.com/260x200/000/fff.jpg"
+        className="cart-card__image"
+      />
       <h2 className="cart-card__product-name">
         Bose QuietComfort 35 II Wireless Bluetooth Headphones
       </h2>
@@ -25,7 +29,12 @@ function CartCard() {
           +{" "}
         </button>
       </div>
-      <button></button>
+      <button className="cart-card__cancel-button">
+        <FontAwesomeIcon
+          icon="fa-solid fa-trash"
+          className="cart-card__cancel-icon"
+        />
+      </button>
     </div>
   );
 }
