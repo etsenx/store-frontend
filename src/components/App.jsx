@@ -16,6 +16,7 @@ import Profile from "../pages/Profile/Profile";
 import MyOrder from "../pages/Profile/MyOrder/MyOrder";
 import StoreLayout from "../layout/StoreLayout";
 import Cart from "../pages/Cart/Cart";
+import OrderDetail from "../pages/Profile/MyOrder/OrderDetail/OrderDetail";
 
 library.add(faStar, faStarReg, faX, faTrash);
 
@@ -33,6 +34,7 @@ function App() {
           <Route path="/password/forgot" element={<ForgotPassword />} />
           <Route path="/me" element={<Profile />} />
           <Route path="/me/orders" element={<MyOrder />} />
+          <Route path="/me/order/:id" element={<OrderDetail />} />
           <Route path="/me/update" element={<UpdateProfile />} />
           <Route path="/cart" element={<Cart />} />
         </Route>

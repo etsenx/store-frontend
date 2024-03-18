@@ -1,10 +1,10 @@
 .cart-card {
   display: flex;
   align-items: flex-start;
-  justify-content: space-around;
-  padding: 10px 0;
+  justify-content: space-between;
+  padding: 20px 0;
   width: 800px;
-  height: 100px;
+  height: 80px;
   border-top: 1px solid rgba(216, 216, 216, 1);
   border-bottom: 1px solid rgba(216, 216, 216, 1);
 }
@@ -20,14 +20,24 @@
   width: 200px;
 }
 
+.cart-card__price {
+  color: #FED669;
+  margin: 0;
+}
+
 .cart-card__qty-button {
   display: flex;
   align-items: center;
 }
 
+.product-page-quantity-button:hover {
+  cursor: pointer;
+}
+
 .cart-card__cancel-button {
   border: none;
   background: none;
+  margin-top: 5px;
 }
 
 .cart-card__cancel-icon {

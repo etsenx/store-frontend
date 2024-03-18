@@ -3,8 +3,8 @@ import "./ProductCard.css";
 import { Link } from "react-router-dom";
 // import PropTypes from 'prop-types';
 
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReviewStars from "../ReviewStars/ReviewStars";
+import Button from "../Button/Button";
 
 function ProductCard() {
   return (
@@ -19,16 +19,13 @@ function ProductCard() {
       </div>
       <div className="product-card-bottom-container">
         <div className="product-card-review-container">
-          {/* <FontAwesomeIcon icon="fa-regular fa-star" style={{ color: "#ffda1c" }} />
-          <FontAwesomeIcon icon="fa-regular fa-star" style={{ color: "#ffda1c" }} />
-          <FontAwesomeIcon icon="fa-regular fa-star" style={{ color: "#ffda1c" }} />
-          <FontAwesomeIcon icon="fa-regular fa-star" style={{ color: "#ffda1c" }} />
-          <FontAwesomeIcon icon="fa-regular fa-star" style={{ color: "#ffda1c" }} /> */}
           <ReviewStars rating={0} />
           <span className="product-card-text-review">(0 Reviews)</span>
         </div>
         <p className="product-card-price">$315</p>
-        <Link to="/product/id"><button className="product-card-button">View Details</button></Link>
+        <Link to="/product/id">
+          <Button>View Details</Button>
+          </Link>
       </div>
     </div>
   );

@@ -29,7 +29,12 @@ function MyOrder() {
         <Column field="price" header="Amount"></Column>
         <Column field="title" header="Payment Status"></Column>
         <Column field="stock" header="Order Status"></Column>
-        <Column field="actions" header="Actions"></Column>
+        <Column field="actions" header="Actions" body={(rowData) => (
+          <div>
+      <button onClick={() => handleView(rowData)}>View</button>
+      <button onClick={() => handlePrint(rowData)}>Print</button>
+    </div>
+        )}></Column>
       </DataTable>
       <div className="card">
       </div>

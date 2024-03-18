@@ -33,6 +33,7 @@ function CartCard() {
         <FontAwesomeIcon
           icon="fa-solid fa-trash"
           className="cart-card__cancel-icon"
+          style={{ color: "#dc3545" }}
         />
       </button>
     </div>

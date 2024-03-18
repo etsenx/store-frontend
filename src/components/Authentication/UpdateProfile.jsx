@@ -1,3 +1,5 @@
+import Button from "../Button/Button";
+
 function UpdateProfile() {
   return (
     <form className="authentication-form">
@@ -18,7 +20,7 @@ function UpdateProfile() {
           <span className="file-custom"></span>
         </label>
       </div>
-      <button className="authentication-button">Update</button>
+      <Button className="authentication-button">Update</Button>
     </form>
   );
 }

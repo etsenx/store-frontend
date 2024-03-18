@@ -2,6 +2,7 @@ import { useState } from "react";
 import ReviewStars from "../../components/ReviewStars/ReviewStars";
 import "./Product.css";
 import Reviews from "../../components/Reviews/Reviews";
+import Button from "../../components/Button/Button";
 
 function Product() {
   const [stockStatus, setStockStatus] = useState(false);
@@ -44,9 +45,9 @@ function Product() {
                 {" "}
                 +{" "}
               </button>
-              <button className="product-page-add" disabled>
+              <Button className="product-page-add" disabled>
                 Add to Cart
-              </button>
+              </Button>
             </div>
             <hr />
             <p style={{ margin: "25px 0" }}>
@@ -80,9 +81,9 @@ function Product() {
             <p>
               Sold by: <span className="product-page-seller-name">Amazon</span>
             </p>
-            <button className="product-page-submit-review">
+            <Button className="product-page-submit-review">
               Submit your Review
-            </button>
+            </Button>
           </div>
         </div>
         <div className="product-page-review">

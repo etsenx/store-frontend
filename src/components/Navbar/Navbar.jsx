@@ -4,6 +4,7 @@ import search from "../../assets/search-icon.png";
 import dropdown from "../../assets/dropdown-icon.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
+import Button from "../Button/Button";
 
 const useOutsideClick = (callback) => {
   const ref = useRef();
@@ -26,8 +27,9 @@ const useOutsideClick = (callback) => {
 };
 
 function Navbar() {
+  const [isLoggedIn] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
-  const [productSearch, setProductSearch] = useState('');
+  const [productSearch, setProductSearch] = useState("");
   const navigate = useNavigate();
 
   function handleDropdownClick() {
@@ -35,11 +37,13 @@ function Navbar() {
   }
 
   function handleInputChange(e) {
-    setProductSearch(e.target.value)
+    setProductSearch(e.target.value);
   }
 
   function handleSubmitSearch() {
-    navigate(`/search/${productSearch}`);
+    if (productSearch !== "") {
+      navigate(`/search/${productSearch}`);
+    }
   }
 
   const dropdownRef = useOutsideClick(() => setIsOpen(false));
@@ -65,26 +69,33 @@ function Navbar() {
         <Link to="/cart">
           Cart <span className="cart-count">0</span>
         </Link>
-        <Link
-          className="dropdown"
-          ref={dropdownRef}
-          onClick={handleDropdownClick}
-        >
-          <img
-            src="https://dummyimage.com/35x35/000/fff.jpg"
-            className="profile-picture"
-          />
-          Steven <img src={dropdown} className="dropdown-icon" />
-        </Link>
-        <div
-          className="dropdown-content"
-          style={isOpen ? { display: "block" } : { display: "none" }}
-        >
-          <Link to="/admin/dashboard">Admin Page</Link>
-          <Link to="/me/orders">Orders</Link>
-          <Link to="/me">Profile</Link>
-          <Link>Logout</Link>
-        </div>
+
+        {isLoggedIn ? (
+          <>
+            <Link
+              className="dropdown"
+              ref={dropdownRef}
+              onClick={handleDropdownClick}
+            >
+              <img
+                src="https://dummyimage.com/35x35/000/fff.jpg"
+                className="profile-picture"
+              />
+              Steven <img src={dropdown} className="dropdown-icon" />
+            </Link>
+            <div
+              className="dropdown-content"
+              style={isOpen ? { display: "block" } : { display: "none" }}
+            >
+              <Link to="/admin/dashboard">Admin Page</Link>
+              <Link to="/me/orders">Orders</Link>
+              <Link to="/me">Profile</Link>
+              <Link>Logout</Link>
+            </div>
+          </>
+        ) : (
+          <Link to="/login"><Button className="navbar__login-button">Login</Button></Link>
+        )}
       </div>
     </div>
   );

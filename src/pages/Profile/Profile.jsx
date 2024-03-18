@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import "./Profile.css";
 import ProfileInfo from "./ProfileInfo";
+import Button from "../../components/Button/Button";
 
 function Profile() {
   return (
@@ -13,7 +14,7 @@ function Profile() {
             className="profile-page-avatar"
           />
           <Link to="/me/update">
-          <button className="profile-page-button">Edit Profile</button>
+            <Button className="profile-page-button">Edit Profile</Button>
           </Link>
         </div>
         <div className="profile-page-right-side">
@@ -21,21 +22,20 @@ function Profile() {
           <ProfileInfo title="Email Address" info="peter@gmail.com" />
           <ProfileInfo title="Joined On" info="2020-12-19" />
           <Link to="/me/orders">
-            <button
+            <Button
               className="profile-page-button"
-              style={{ backgroundColor: "#dc3545" }}
+              style={{ backgroundColor: "#DC3545" }}
             >
               My Orders
-            </button>
+            </Button>
           </Link>
           <Link to="/password/change">
-            {" "}
-            <button
+            <Button
               className="profile-page-button"
-              style={{ backgroundColor: "#007bff" }}
+              style={{ backgroundColor: "#007BFF" }}
             >
               Change Password
-            </button>
+            </Button>
           </Link>
         </div>
       </div>
