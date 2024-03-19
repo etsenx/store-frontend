@@ -24,7 +24,7 @@ function ProductCard() {
         </div>
         <p className="product-card-price">$315</p>
         <Link to="/product/id">
-          <Button>View Details</Button>
+          <Button className='product-card-button'>View Details</Button>
           </Link>
       </div>
     </div>

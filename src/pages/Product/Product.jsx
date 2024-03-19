@@ -1,8 +1,11 @@
 import { useState } from "react";
+
 import ReviewStars from "../../components/ReviewStars/ReviewStars";
-import "./Product.css";
 import Reviews from "../../components/Reviews/Reviews";
 import Button from "../../components/Button/Button";
+
+import "./Product.css";
+
 
 function Product() {
   const [stockStatus, setStockStatus] = useState(false);

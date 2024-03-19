@@ -16,6 +16,7 @@ function Search() {
         <div className="filter-container">
           <div className="filters">
             <div className="filter-slider">
+              {/* CHange slider to primereact slider*/}
               <ReactSlider
                 className="slider"
                 thumbClassName="thumb"

@@ -1,7 +1,6 @@
-import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faStar, faX, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faStar, faX, faTrash, faEye, faPrint } from "@fortawesome/free-solid-svg-icons";
 import { faStar as faStarReg } from "@fortawesome/free-regular-svg-icons";
 
 import Home from "../pages/Home";
@@ -18,7 +17,9 @@ import StoreLayout from "../layout/StoreLayout";
 import Cart from "../pages/Cart/Cart";
 import OrderDetail from "../pages/Profile/MyOrder/OrderDetail/OrderDetail";
 
-library.add(faStar, faStarReg, faX, faTrash);
+import "./App.css";
+
+library.add(faStar, faStarReg, faX, faTrash, faEye, faPrint);
 
 function App() {
   return (
