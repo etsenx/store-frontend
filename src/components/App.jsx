@@ -22,6 +22,9 @@ import MyOrder from '../pages/Profile/MyOrder/MyOrder';
 import Navbar from './Navbar/Navbar';
 import Cart from '../pages/Cart/Cart';
 import OrderDetail from '../pages/Profile/MyOrder/OrderDetail/OrderDetail';
+import Dashboard from '../pages/Admin/Dashboard/Dashboard';
+
+import AdminLayout from '../layout/AdminLayout';
 
 import './App.css';
 
@@ -46,8 +49,8 @@ function App() {
           <Route path='/me/update' element={<UpdateProfile />} />
           <Route path='/cart' element={<Cart />} />
         </Route>
-        <Route path='/admin/*'>
-          <Route index element={<Home />} />
+        <Route path='/admin/*' element={<AdminLayout />}>
+          <Route path='dashboard' element={<Dashboard />} />
           <Route path='users' element={<Product />} />
           <Route path='products' element={<Login />} />
         </Route>
