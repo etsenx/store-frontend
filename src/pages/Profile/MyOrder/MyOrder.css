@@ -8,8 +8,8 @@
 }
 
 .my-order__action-button {
-  width: 30px;
-  height: 30px;
+  width: 35px;
+  height: 35px;
   border: none;
   border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -17,16 +17,4 @@
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   margin-right: 10px;
-}
-
-.my-order__action-button:hover {
-  cursor: pointer;
-}
-
-.my-order__view-button {
-  background-color: rgb(59 130 246);
-}
-
-.my-order__print-button {
-  background-color: rgb(5 150 105);
 }

@@ -11,6 +11,7 @@ import "./MyOrder.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
+import { Button } from "primereact/button";
 
 function MyOrder() {
   const [products, setProducts] = useState([]);
@@ -31,8 +32,8 @@ function MyOrder() {
 
   const handleViewDetail = (data) => {
     console.log(data.id);
-    navigate(`/me/order/${data.id}`)
-  }
+    navigate(`/me/order/${data.id}`);
+  };
 
   const onGlobalFilterChange = (e) => {
     const value = e.target.value;
@@ -100,18 +101,18 @@ function MyOrder() {
           header="Actions"
           body={(rowData) => (
             <div>
-              <button onClick={() => handleViewDetail(rowData)} className="my-order__action-button my-order__view-button">
-                <FontAwesomeIcon
-                  icon="fa-solid fa-eye"
-                  style={{ color: "#FFFFFF" }}
-                />
-              </button>
-              <button className="my-order__action-button my-order__print-button">
-                <FontAwesomeIcon
-                  icon="fa-solid fa-print"
-                  style={{ color: "#FFFFFF" }}
-                />
-              </button>
+              <Button
+                onClick={() => handleViewDetail(rowData)}
+                className="my-order__action-button px-1 py-0"
+                style={{ backgroundColor: "rgb(59 130 246)" }}
+                icon={<FontAwesomeIcon icon="fa-solid fa-eye" size="sm" />}
+              />
+              <Button
+                // onClick={() => handleViewDetail(rowData)}
+                className="my-order__action-button px-1 py-0"
+                  style={{ backgroundColor: "rgb(5 150 105)" }}
+                icon={<FontAwesomeIcon icon="fa-solid fa-print" size="sm" />}
+              />
             </div>
           )}
         ></Column>
