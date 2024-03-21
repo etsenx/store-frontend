@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from 'react';
 import Button from '../Button/Button';
 
 import logo from '../../assets/logo.png';
-import search from '../../assets/search-icon.png';
 import dropdown from '../../assets/dropdown-icon.png';
 
 import './Navbar.css';

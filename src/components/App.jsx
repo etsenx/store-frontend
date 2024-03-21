@@ -19,21 +19,23 @@ import ForgotPassword from './Authentication/ForgotPassword';
 import UpdateProfile from './Authentication/UpdateProfile';
 import Profile from '../pages/Profile/Profile';
 import MyOrder from '../pages/Profile/MyOrder/MyOrder';
-import Navbar from './Navbar/Navbar';
 import Cart from '../pages/Cart/Cart';
 import OrderDetail from '../pages/Profile/MyOrder/OrderDetail/OrderDetail';
 import Dashboard from '../pages/Admin/Dashboard/Dashboard';
 
 import AdminLayout from '../layout/AdminLayout';
+import HeaderLayout from '../layout/HeaderLayout';
+import FooterLayout from '../layout/FooterLayout';
 
 import './App.css';
+import AddProduct from '../pages/Admin/AddProduct/AddProduct';
 
 library.add(faStar, faStarReg, faX, faTrash, faEye, faPrint);
 
 function App() {
   return (
     <Router>
-      <Navbar />
+      <HeaderLayout />
       <Routes>
         <Route path='/'>
           <Route index element={<Home />} />
@@ -51,10 +53,12 @@ function App() {
         </Route>
         <Route path='/admin/*' element={<AdminLayout />}>
           <Route path='dashboard' element={<Dashboard />} />
+          <Route path='product/add' element={<AddProduct />} />
           <Route path='users' element={<Product />} />
           <Route path='products' element={<Login />} />
         </Route>
       </Routes>
+      <FooterLayout />
     </Router>
   );
 }
