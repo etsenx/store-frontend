@@ -4,16 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { FilterMatchMode } from "primereact/api";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 
-import "./MyOrder.css";
-import "primeicons/primeicons.css";
-import "primeflex/primeflex.css";
-import "primereact/resources/themes/lara-light-indigo/theme.css";
-import { Button } from "primereact/button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-function MyOrder() {
+import "./Products.css";
+
+function Products() {
   const [products, setProducts] = useState([]);
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -21,7 +19,6 @@ function MyOrder() {
   const [globalFilterValue, setGlobalFilterValue] = useState("");
   const navigate = useNavigate();
 
-  // Render dummy products data
   useEffect(() => {
     fetch("https://dummyjson.com/products")
       .then((res) => res.json())
@@ -30,9 +27,13 @@ function MyOrder() {
       });
   }, []);
 
-  const handleViewDetail = (data) => {
-    navigate(`/me/order/${data.id}`);
-  };
+  const handleEditButton = (data) => {
+    navigate(`/admin/products/${data.id}/edit`)
+  }
+
+  const handleEditImageButton = (data) => {
+    navigate(`/admin/products/${data.id}/edit-image`)
+  }
 
   const onGlobalFilterChange = (e) => {
     const value = e.target.value;
@@ -62,10 +63,10 @@ function MyOrder() {
 
   const header = renderHeader();
   return (
-    <div className="my-order-page">
+    <div className="flex flex-column w-full">
+      <h2>Total Products: 10</h2>
       <DataTable
         value={products}
-        tableStyle={{ minWidth: "1280px" }}
         size="small"
         paginator
         showGridlines
@@ -73,52 +74,43 @@ function MyOrder() {
         rows={10}
         rowsPerPageOptions={[10, 25, 50]}
         filters={filters}
-        globalFilterFields={["id", "price", "title", "stock"]}
         header={header}
       >
-        <Column field="id" sortable filterField="id" header="Order Id"></Column>
+        <Column field="id" header="ID" className="w-1" />
+        <Column field="title" header="Nama" className="w-7" />
+        <Column field="stock" header="Stock" className="w-1" />
         <Column
-          field="price"
-          sortable
-          filterField="price"
-          header="Amount"
-        ></Column>
-        <Column
-          field="title"
-          sortable
-          filterField="title"
-          header="Payment Status"
-        ></Column>
-        <Column
-          field="stock"
-          sortable
-          filterField="stock"
-          header="Order Status"
-        ></Column>
-        <Column
+          className="w-3"
           field="actions"
           header="Actions"
           body={(rowData) => (
-            <div>
+            <>
               <Button
-                onClick={() => handleViewDetail(rowData)}
-                className="my-order__action-button px-1 py-0"
+                onClick={() => handleEditButton(rowData)}
+                className="products__action-button px-1 py-0"
                 style={{ backgroundColor: "rgb(59 130 246)" }}
-                icon={<FontAwesomeIcon icon="fa-solid fa-eye" size="sm" />}
+                icon={<FontAwesomeIcon icon="fa-solid fa-pencil" size="sm" />}
+              />
+              <Button
+                onClick={() => handleEditImageButton(rowData)}
+                className="products__action-button px-1 py-0"
+                style={{ backgroundColor: "rgb(5 150 105)" }}
+                icon={<FontAwesomeIcon icon="fa-regular fa-image" size="sm" />}
               />
               <Button
                 // onClick={() => handleViewDetail(rowData)}
-                className="my-order__action-button px-1 py-0"
-                  style={{ backgroundColor: "rgb(5 150 105)" }}
-                icon={<FontAwesomeIcon icon="fa-solid fa-print" size="sm" />}
+                className="products__action-button px-1 py-0"
+                style={{ backgroundColor: "#ef4444" }}
+                icon={
+                  <FontAwesomeIcon icon="fa-solid fa-trash-can" size="sm" />
+                }
               />
-            </div>
+            </>
           )}
-        ></Column>
+        />
       </DataTable>
-      <div className="card"></div>
     </div>
   );
 }
 
-export default MyOrder;
+export default Products;

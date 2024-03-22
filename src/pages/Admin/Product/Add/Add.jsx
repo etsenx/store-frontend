@@ -2,14 +2,14 @@ import { useState } from "react";
 
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
-import Button from "../../../components/Button/Button";
-
 import { InputNumber } from "primereact/inputnumber";
 import { Dropdown } from "primereact/dropdown";
 
-import "./AddProduct.css";
+import Button from "../../../../components/Button/Button";
 
-function AddProduct() {
+import "./Add.css";
+
+function Add() {
   const [selectedCity, setSelectedCity] = useState(null);
   const cities = [
     { name: "New York", code: "NY" },
@@ -77,4 +77,4 @@ function AddProduct() {
   );
 }
 
-export default AddProduct;
+export default Add;
