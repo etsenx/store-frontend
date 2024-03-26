@@ -30,13 +30,17 @@ import Dashboard from "../pages/Admin/Dashboard/Dashboard";
 import { default as AddProduct } from "../pages/Admin/Product/Add/Add";
 import Products from "../pages/Admin/Products/Products";
 import { default as EditProduct } from "../pages/Admin/Products/Edit/Edit";
-import EditImage, { default as EditImageProduct } from "../pages/Admin/Products/EditImage/EditImage";
+import { default as EditImageProduct } from "../pages/Admin/Products/EditImage/EditImage";
+import Users from "../pages/Admin/Users/Users";
 
 import AdminLayout from "../layout/AdminLayout";
 import HeaderLayout from "../layout/HeaderLayout";
 import FooterLayout from "../layout/FooterLayout";
 
+
+import 'primereact/resources/themes/lara-light-cyan/theme.css'; //theme
 import "./App.css";
+import { Cloudinary } from "@cloudinary/url-gen";
 
 library.add(
   faStar,
@@ -51,6 +55,8 @@ library.add(
 );
 
 function App() {
+  const cld = new Cloudinary({cloud: {cloudName: 'dykebosio'}});
+
   return (
     <Router>
       <HeaderLayout />
@@ -72,10 +78,10 @@ function App() {
         <Route path="/admin/*" element={<AdminLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="product/add" element={<AddProduct />} />
-          <Route path="users" element={<Product />} />
           <Route path="products" element={<Products />} />
           <Route path="products/:id/edit" element={<EditProduct />} />
           <Route path="products/:id/edit-image" element={<EditImageProduct />} />
+          <Route path="users" element={<Users />} />
         </Route>
       </Routes>
       <FooterLayout />

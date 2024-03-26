@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 import { Toast } from "primereact/toast";
 import { Tooltip } from "primereact/tooltip";
 import { FileUpload } from "primereact/fileupload";
@@ -5,9 +7,9 @@ import { useRef, useState } from "react";
 import { ProgressBar } from "primereact/progressbar";
 import { Tag } from "primereact/tag";
 
-import "./EditImage.css";
 import { Button } from "primereact/button";
 
+import "./EditImage.css";
 function EditImage() {
   const toast = useRef(null);
   const [totalSize, setTotalSize] = useState(0);
@@ -198,3 +200,8 @@ function EditImage() {
 }
 
 export default EditImage;
+
+EditImage.propTypes = {
+  formatSize: PropTypes.string,
+  onRemove: PropTypes.func,
+}
