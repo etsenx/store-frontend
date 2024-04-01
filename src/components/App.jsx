@@ -41,6 +41,9 @@ import FooterLayout from "../layout/FooterLayout";
 import 'primereact/resources/themes/lara-light-cyan/theme.css'; //theme
 import "./App.css";
 import { Cloudinary } from "@cloudinary/url-gen";
+import {AdvancedImage} from '@cloudinary/react';
+import {fill} from "@cloudinary/url-gen/actions/resize";
+
 
 library.add(
   faStar,
@@ -56,10 +59,13 @@ library.add(
 
 function App() {
   const cld = new Cloudinary({cloud: {cloudName: 'dykebosio'}});
+  const myImage = cld.image('cld-sample');
+  myImage.resize(fill().width(250).height(250));
 
   return (
     <Router>
       <HeaderLayout />
+      {/* <AdvancedImage cldImg={myImage} /> */}
       <Routes>
         <Route path="/">
           <Route index element={<Home />} />
