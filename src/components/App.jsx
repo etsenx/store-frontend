@@ -37,13 +37,12 @@ import AdminLayout from "../layout/AdminLayout";
 import HeaderLayout from "../layout/HeaderLayout";
 import FooterLayout from "../layout/FooterLayout";
 
+import { AdvancedImage } from "@cloudinary/react";
+import { fill } from "@cloudinary/url-gen/actions/resize";
+import cld from "../utils/CloudinaryInstance";
 
-import 'primereact/resources/themes/lara-light-cyan/theme.css'; //theme
+import "primereact/resources/themes/lara-light-cyan/theme.css"; //theme
 import "./App.css";
-import { Cloudinary } from "@cloudinary/url-gen";
-import {AdvancedImage} from '@cloudinary/react';
-import {fill} from "@cloudinary/url-gen/actions/resize";
-
 
 library.add(
   faStar,
@@ -58,8 +57,7 @@ library.add(
 );
 
 function App() {
-  const cld = new Cloudinary({cloud: {cloudName: 'dykebosio'}});
-  const myImage = cld.image('cld-sample');
+  const myImage = cld.image("cld-sample");
   myImage.resize(fill().width(250).height(250));
 
   return (
@@ -86,7 +84,10 @@ function App() {
           <Route path="product/add" element={<AddProduct />} />
           <Route path="products" element={<Products />} />
           <Route path="products/:id/edit" element={<EditProduct />} />
-          <Route path="products/:id/edit-image" element={<EditImageProduct />} />
+          <Route
+            path="products/:id/edit-image"
+            element={<EditImageProduct />}
+          />
           <Route path="users" element={<Users />} />
         </Route>
       </Routes>
