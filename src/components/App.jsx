@@ -37,6 +37,7 @@ import AdminLayout from "../layout/AdminLayout";
 import HeaderLayout from "../layout/HeaderLayout";
 import FooterLayout from "../layout/FooterLayout";
 
+
 import { AdvancedImage } from "@cloudinary/react";
 import { fill } from "@cloudinary/url-gen/actions/resize";
 import cld from "../utils/CloudinaryInstance";
@@ -59,6 +60,8 @@ library.add(
 function App() {
   const myImage = cld.image("cld-sample");
   myImage.resize(fill().width(250).height(250));
+
+  
 
   return (
     <Router>
