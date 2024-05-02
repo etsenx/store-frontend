@@ -2,8 +2,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import Button from '../Button/Button';
 
+import { useSelector, useDispatch } from 'react-redux';
+
 import logo from '../../assets/logo.png';
 import dropdown from '../../assets/dropdown-icon.png';
+
+import { AdvancedImage } from "@cloudinary/react";
+import cld from '../../utils/CloudinaryInstance';
+import { fill } from '@cloudinary/url-gen/actions/resize';
 
 import './Navbar.css';
 import 'primeicons/primeicons.css';
@@ -29,7 +35,8 @@ const useOutsideClick = (callback) => {
 };
 
 function Navbar() {
-  const [isLoggedIn] = useState(true);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [productSearch, setProductSearch] = useState('');
   const navigate = useNavigate();
@@ -48,7 +55,16 @@ function Navbar() {
     }
   }
 
+  function handleLogout() {
+    setIsOpen(false);
+    navigate("/logout");
+  }
+
   const dropdownRef = useOutsideClick(() => setIsOpen(false));
+  var userAvatar = "";
+  if (isAuthenticated) {
+    userAvatar = cld.image(user.avatar).resize(fill().width(35).height(35));
+  }
 
   return (
     <div className='navbar'>
@@ -68,31 +84,28 @@ function Navbar() {
         </button>
       </div>
       <div className='right-container'>
-        <Link to='/cart'>
+        <Link to={isAuthenticated ? "/cart" : "/login"}>
           Cart <span className='cart-count'>0</span>
         </Link>
 
-        {isLoggedIn ? (
+        {isAuthenticated ? (
           <>
             <Link
               className='dropdown'
               ref={dropdownRef}
               onClick={handleDropdownClick}
             >
-              <img
-                src='https://dummyimage.com/35x35/000/fff.jpg'
-                className='profile-picture'
-              />
-              Steven <img src={dropdown} className='dropdown-icon' />
+              <AdvancedImage cldImg={userAvatar} className='profile-picture' />
+              {user.name} <img src={dropdown} className='dropdown-icon' />
             </Link>
             <div
               className='dropdown-content'
               style={isOpen ? { display: 'block' } : { display: 'none' }}
             >
-              <Link to='/admin/dashboard'>Dashboard</Link>
+              {user.privilege === 'admin' ? <Link to='/admin/dashboard'>Dashboard</Link> : ""}
               <Link to='/me/orders'>Orders</Link>
               <Link to='/me'>Profile</Link>
-              <Link>Logout</Link>
+              <Link to='/logout' onClick={handleLogout}>Logout</Link>
             </div>
           </>
         ) : (
@@ -106,3 +119,5 @@ function Navbar() {
 }
 
 export default Navbar;
+
+
