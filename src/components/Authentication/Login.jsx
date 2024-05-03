@@ -57,6 +57,7 @@ function Login() {
         type='email'
         value={emailInput}
         onChange={handleInputChange}
+        autoComplete='username'
       />
       <label htmlFor='password'>Password</label>
       <input
@@ -64,6 +65,7 @@ function Login() {
         type='password'
         value={passwordInput}
         onChange={handleInputChange}
+        autoComplete='current-password'
       />
       <Link className='forgot-password' to='/password/forgot'>
         Forgot Password?
