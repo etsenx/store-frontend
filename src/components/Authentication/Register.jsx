@@ -33,9 +33,10 @@ function Register() {
     const formData = new FormData();
     formData.append("file", imageFile);
     formData.append("upload_preset", preset_key);
+    formData.append("public_id", "testes");
     axios
       .post(
-        `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
+        `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload?folder=tripleshop/users`,
         formData
       )
       .then((res) => console.log("success"))
@@ -48,11 +49,11 @@ function Register() {
     <form className="authentication-form">
       <h1 className="authentication-title">Register</h1>
       <label htmlFor="name">Name</label>
-      <input id="name" type="text" />
+      <input id="name" type="text" required />
       <label htmlFor="email">Email</label>
-      <input id="email" type="email" />
+      <input id="email" type="email" required />
       <label htmlFor="password">Password</label>
-      <input id="password" type="password" />
+      <input id="password" type="password" required />
       <label htmlFor="avatar">Avatar</label>
       <div className="register-avatar-upload-container">
         <img src={image} alt="Avatar" className="register-avatar" />
