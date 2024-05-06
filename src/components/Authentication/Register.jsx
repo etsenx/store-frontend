@@ -1,10 +1,8 @@
 import axios from "axios";
 import "./Register.css";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 function Register() {
-  const preset_key = "zrf4qj7i";
-  const cloud_name = "dykebosio";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -43,39 +41,21 @@ function Register() {
       return;
     }
     setIsSubmitting(true);
+    const formData = new FormData();
+    formData.append("file", imageFile);
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("password", password);
+
     axios
-      .post("http://localhost:3000/register", {
-        email: email,
-        password: password,
-        name: name,
-      })
+      .post("http://localhost:3000/register", formData)
       .then((res) => {
         console.log(res.data);
-        const formData = new FormData();
-        formData.append("file", imageFile);
-        formData.append("upload_preset", preset_key);
-        formData.append("public_id", "testes");
-        axios
-          .post(
-            `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload?folder=tripleshop/users/avatar`,
-            formData
-          )
-          .then((res) => {
-            console.log(res.data);
-            // const avatarPublicId = res.data;
-            axios
-              .post("http://localhost:3000/login", {
-                email: email,
-                password: password,
-              })
-              .then((res) => {
-                axios.post("http://localhost:3000");
-              });
-          })
-          .catch((err) => console.log(err));
+      })
+      .catch((err) => {
+        console.log(err);
       })
       .finally(() => {
-        console.log("finally end");
         setIsSubmitting(false);
       });
   }
