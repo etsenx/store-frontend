@@ -11,6 +11,7 @@ function Register() {
   );
   const [imageFile, setImageFile] = useState();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showError, setShowError] = useState(false);
 
   function handleInputChange(e) {
     if (e.target.id === "email") {
@@ -36,6 +37,7 @@ function Register() {
 
   function handleSubmit(e) {
     e.preventDefault();
+    setShowError(false);
     if (!imageFile) {
       console.log("please upload file");
       return;
@@ -52,15 +54,15 @@ function Register() {
       .then((res) => {
         console.log(res.data);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
+        setShowError(true);
       })
       .finally(() => {
         setIsSubmitting(false);
       });
   }
   return (
-    <form className="authentication-form">
+    <form className="authentication-form" onSubmit={handleSubmit}>
       <h1 className="authentication-title">Register</h1>
       <label htmlFor="name">Name</label>
       <input
@@ -99,14 +101,17 @@ function Register() {
             aria-label="File browser example"
             accept="image/*"
             onChange={handleFile}
+            required
           />
           <span className="file-custom"></span>
         </label>
         {/* <UploadWidget /> */}
       </div>
+      <div className={`mx-auto -mt-4 mb-3 justify-content-center ${showError ? 'flex' : 'hidden'}`}>
+        <span className="text-red-500 inline-block mx-auto text-sm">User already exists</span>
+      </div>
       <button
         className="authentication-button"
-        onClick={handleSubmit}
         disabled={isSubmitting}
         style={{ opacity: isSubmitting ? 0.6 : 1 }}
       >
