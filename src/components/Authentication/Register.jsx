@@ -1,8 +1,15 @@
-import axios from "axios";
 import "./Register.css";
+
+import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import Cookies from 'js-cookie';
+import { login } from "../../redux/authSlice";
 
 function Register() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -15,7 +22,7 @@ function Register() {
 
   function handleInputChange(e) {
     if (e.target.id === "email") {
-      setEmail(e.target.value);
+    setEmail(e.target.value);
     } else if (e.target.id === "password") {
       setPassword(e.target.value);
     } else if (e.target.id === "name") {
@@ -38,10 +45,6 @@ function Register() {
   function handleSubmit(e) {
     e.preventDefault();
     setShowError(false);
-    if (!imageFile) {
-      console.log("please upload file");
-      return;
-    }
     setIsSubmitting(true);
     const formData = new FormData();
     formData.append("file", imageFile);
@@ -51,8 +54,25 @@ function Register() {
 
     axios
       .post("http://localhost:3000/register", formData)
-      .then((res) => {
-        console.log(res.data);
+      .then(() => {
+        axios
+          .post(`${import.meta.env.VITE_REACT_API_URL}/login`, {
+            email: email,
+            password: password,
+          })
+          .then((res) => {
+            Cookies.set("token", res.data.token, { expires: 7, secure: true });
+            axios
+              .get(`${import.meta.env.VITE_REACT_API_URL}/users/me`, {
+                headers: {
+                  Authorization: `Bearer ${res.data.token}`,
+                },
+              })
+              .then((res) => {
+                dispatch(login(res.data));
+              });
+            navigate("/");
+          });
       })
       .catch(() => {
         setShowError(true);
@@ -107,8 +127,14 @@ function Register() {
         </label>
         {/* <UploadWidget /> */}
       </div>
-      <div className={`mx-auto -mt-4 mb-3 justify-content-center ${showError ? 'flex' : 'hidden'}`}>
-        <span className="text-red-500 inline-block mx-auto text-sm">User already exists</span>
+      <div
+        className={`mx-auto -mt-4 mb-3 justify-content-center ${
+          showError ? "flex" : "hidden"
+        }`}
+      >
+        <span className="text-red-500 inline-block mx-auto text-sm">
+          User already exists
+        </span>
       </div>
       <button
         className="authentication-button"
