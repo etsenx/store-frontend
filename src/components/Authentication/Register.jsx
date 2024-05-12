@@ -1,10 +1,13 @@
 import "./Register.css";
 
 import axios from "axios";
+
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+
 import Cookies from 'js-cookie';
+
 import { login } from "../../redux/authSlice";
 
 function Register() {
@@ -118,7 +121,6 @@ function Register() {
           <input
             type="file"
             id="file"
-            aria-label="File browser example"
             accept="image/*"
             onChange={handleFile}
             required

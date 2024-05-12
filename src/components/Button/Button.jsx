@@ -1,9 +1,9 @@
 import './Button.css';
 import PropTypes from 'prop-types';
 
-function Button({ style ,className, children, onClick }) {
+function Button({ style, className, children, onClick, isDisabled }) {
   return (
-    <button style={style} className={`button ${className}`} onClick={onClick}>{children}</button>
+    <button style={style} className={`button ${className}`} onClick={onClick} disabled={isDisabled}>{children}</button>
   )
 }
 
