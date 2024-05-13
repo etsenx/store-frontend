@@ -24,11 +24,12 @@ function Register() {
   const [showError, setShowError] = useState(false);
 
   function handleInputChange(e) {
+    const nameRegex = /[^A-Za-z]/;
     if (e.target.id === "email") {
     setEmail(e.target.value);
     } else if (e.target.id === "password") {
       setPassword(e.target.value);
-    } else if (e.target.id === "name") {
+    } else if (e.target.id === "name" && !nameRegex.test(e.target.value)) {
       setName(e.target.value);
     }
   }

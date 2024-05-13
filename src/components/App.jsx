@@ -82,6 +82,7 @@ function App() {
         })
         .then((res) => {
           dispatch(login(res.data));
+          console.log(res.data);
         })
         .catch((err) => {
           console.log(err);
