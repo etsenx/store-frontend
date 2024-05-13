@@ -2,13 +2,15 @@ import "./Register.css";
 
 import axios from "axios";
 
-import { useState } from "react";
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 import { login } from "../../redux/authSlice";
+
+import { Toast } from "primereact/toast";
 
 function Register() {
   const dispatch = useDispatch();
@@ -21,12 +23,12 @@ function Register() {
   );
   const [imageFile, setImageFile] = useState();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showError, setShowError] = useState(false);
+  const toast = useRef(null);
 
   function handleInputChange(e) {
     const nameRegex = /[^A-Za-z]/;
     if (e.target.id === "email") {
-    setEmail(e.target.value);
+      setEmail(e.target.value);
     } else if (e.target.id === "password") {
       setPassword(e.target.value);
     } else if (e.target.id === "name" && !nameRegex.test(e.target.value)) {
@@ -48,7 +50,6 @@ function Register() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    setShowError(false);
     setIsSubmitting(true);
     const formData = new FormData();
     formData.append("file", imageFile);
@@ -79,14 +80,25 @@ function Register() {
           });
       })
       .catch(() => {
-        setShowError(true);
+        showError();
       })
       .finally(() => {
         setIsSubmitting(false);
       });
   }
+
+  const showError = () => {
+    toast.current.show({
+      severity: "error",
+      summary: "Error",
+      detail: "User Already Exist",
+      life: 3000,
+    });
+  };
+
   return (
     <form className="authentication-form" onSubmit={handleSubmit}>
+      <Toast ref={toast} />
       <h1 className="authentication-title">Register</h1>
       <label htmlFor="name">Name</label>
       <input
@@ -128,16 +140,6 @@ function Register() {
           />
           <span className="file-custom"></span>
         </label>
-        {/* <UploadWidget /> */}
-      </div>
-      <div
-        className={`mx-auto -mt-4 mb-3 justify-content-center ${
-          showError ? "flex" : "hidden"
-        }`}
-      >
-        <span className="text-red-500 inline-block mx-auto text-sm">
-          User already exists
-        </span>
       </div>
       <button
         className="authentication-button"

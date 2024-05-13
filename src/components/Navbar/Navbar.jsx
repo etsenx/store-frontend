@@ -63,7 +63,6 @@ function Navbar() {
   const dropdownRef = useOutsideClick(() => setIsOpen(false));
   var userAvatar = "";
   if (isAuthenticated) {
-    console.log(user.avatar);
     userAvatar = cld.image(user.avatar).resize(fill().width(35).height(35));
   }
 

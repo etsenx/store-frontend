@@ -1,6 +1,6 @@
 import Button from "../Button/Button";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/authSlice";
@@ -13,6 +13,7 @@ import Cookies from "js-cookie";
 
 import { ConfirmDialog } from "primereact/confirmdialog";
 import { confirmDialog } from "primereact/confirmdialog";
+import { Toast } from "primereact/toast";
 
 function UpdateProfile() {
   const dispatch = useDispatch();
@@ -23,8 +24,7 @@ function UpdateProfile() {
   const [imageFile, setImageFile] = useState();
   const [hasAvatarChanged, setHasAvatarChanged] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const toast = useRef(null);
 
   function handleInputChange(e) {
     const nameRegex = /[^A-Za-z]/;
@@ -55,10 +55,8 @@ function UpdateProfile() {
 
   const accept = () => {
     setIsSubmitting(true);
-    setShowErrorMessage(false);
-    setShowSuccessMessage(false);
     if (name === user.name && email === user.email && !hasAvatarChanged) {
-      setShowErrorMessage(true);
+      showError();
       setIsSubmitting(false);
       return;
     }
@@ -75,22 +73,14 @@ function UpdateProfile() {
         },
       })
       .then((res) => {
+        console.log(res.data);
         dispatch(login(res.data));
-        setShowSuccessMessage(true);
+        showSuccess();
       })
       .finally(() => {
         setIsSubmitting(false);
       });
   };
-
-  // const reject = () => {
-  //   toast.current.show({
-  //     severity: "warn",
-  //     summary: "Rejected",
-  //     detail: "You have rejected",
-  //     life: 3000,
-  //   });
-  // };
 
   const confirm1 = () => {
     confirmDialog({
@@ -99,12 +89,20 @@ function UpdateProfile() {
       icon: "pi pi-exclamation-triangle",
       defaultFocus: "accept",
       accept,
-      // reject
     });
   };
 
+    const showSuccess = () => {
+      toast.current.show({severity:'success', summary: 'Success', detail:'Profile Updated', life: 3000});
+    }
+
+    const showError = () => {
+      toast.current.show({severity:'error', summary: 'Error', detail:'No Change Made', life: 3000});
+    }
+
   return (
     <form className="authentication-form" onSubmit={handleSubmit}>
+      <Toast ref={toast} />
       <h2 className="authentication-title">Update Profile</h2>
       <label htmlFor="name">Name</label>
       <input
@@ -136,24 +134,6 @@ function UpdateProfile() {
           <input type="file" id="file" aria-label="File browser example" />
           <span className="file-custom"></span>
         </label>
-      </div>
-      <div
-        className={`mx-auto -mt-4 mb-2 justify-content-center ${
-          showSuccessMessage ? "flex" : "hidden"
-        }`}
-      >
-        <span className="text-green-500 inline-block mx-auto text-sm">
-          Updated Successfully
-        </span>
-      </div>
-      <div
-        className={`mx-auto -mt-4 mb-2 justify-content-center ${
-          showErrorMessage ? "flex" : "hidden"
-        }`}
-      >
-        <span className="text-red-500 inline-block mx-auto text-sm">
-          No Change Made
-        </span>
       </div>
       <Button
         style={{ opacity: isSubmitting ? 0.6 : 1 }}
