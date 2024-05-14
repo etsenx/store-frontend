@@ -67,15 +67,24 @@ function UpdateProfile() {
     formData.append("previousAvatar", user.avatar);
     const jwt = Cookies.get("token");
     axios
-      .patch("http://localhost:3000/users/change-profile", formData, {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      })
+      .patch(
+        `${import.meta.env.VITE_REACT_API_URL}/users/change-profile`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      )
       .then((res) => {
-        console.log(res.data);
         dispatch(login(res.data));
         showSuccess();
+      })
+      .catch((err) => {
+        const errorResponse = JSON.parse(err.request.response);
+        if (errorResponse.message === "User already exists") {
+          showUserExistError();
+        }
       })
       .finally(() => {
         setIsSubmitting(false);
@@ -92,13 +101,33 @@ function UpdateProfile() {
     });
   };
 
-    const showSuccess = () => {
-      toast.current.show({severity:'success', summary: 'Success', detail:'Profile Updated', life: 3000});
-    }
+  const showSuccess = () => {
+    toast.current.show({
+      severity: "success",
+      summary: "Success",
+      detail: "Profile Updated",
+      life: 3000,
+    });
+  };
 
-    const showError = () => {
-      toast.current.show({severity:'error', summary: 'Error', detail:'No Change Made', life: 3000});
-    }
+  const showError = () => {
+    toast.current.show({
+      severity: "error",
+      summary: "Error",
+      detail: "No Change Made",
+      life: 3000,
+    });
+  };
+
+  const showUserExistError = () => {
+    toast.current.show({
+      severity: "error",
+      summary: "Error",
+      detail:
+        "Email is already in use. Please choose a different email address",
+      life: 3000,
+    });
+  };
 
   return (
     <form className="authentication-form" onSubmit={handleSubmit}>
@@ -142,7 +171,7 @@ function UpdateProfile() {
       >
         {isSubmitting ? "Loading..." : "Update"}
       </Button>
-      <ConfirmDialog />
+      <ConfirmDialog draggable={false} />
     </form>
   );
 }

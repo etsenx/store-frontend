@@ -58,7 +58,7 @@ function Register() {
     formData.append("password", password);
 
     axios
-      .post("http://localhost:3000/register", formData)
+      .post(`${import.meta.env.VITE_REACT_API_URL}/register`, formData)
       .then(() => {
         axios
           .post(`${import.meta.env.VITE_REACT_API_URL}/login`, {
