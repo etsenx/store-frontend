@@ -37,6 +37,7 @@ import Products from "../pages/Admin/Products/Products";
 import { default as EditProduct } from "../pages/Admin/Products/Edit/Edit";
 import { default as EditImageProduct } from "../pages/Admin/Products/EditImage/EditImage";
 import Users from "../pages/Admin/Users/Users";
+import { default as EditUser } from "../pages/Admin/Users/Edit/Edit";
 
 import AdminLayout from "../layout/AdminLayout";
 import HeaderLayout from "../layout/HeaderLayout";
@@ -141,6 +142,7 @@ function App() {
             element={<EditImageProduct />}
           />
           <Route path="users" element={<Users />} />
+          <Route path="users/:id/edit" element={<EditUser />} />
         </Route>
       </Routes>
       <FooterLayout />
