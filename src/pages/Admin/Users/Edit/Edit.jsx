@@ -70,7 +70,7 @@ function Edit() {
     });
   };
 
-  const acceptSubmit = () => {
+  const acceptSubmit = async () => {
     setIsSubmitting(true);
     if (
       name === initialData.name &&
@@ -82,8 +82,8 @@ function Edit() {
       return;
     }
     const jwt = Cookies.get("token");
-    axios
-      .patch(
+    try {
+      const response = await axios.patch(
         `${import.meta.env.VITE_REACT_API_URL}/users/change-profile/${id}`,
         {
           name,
@@ -95,32 +95,31 @@ function Edit() {
             Authorization: `Bearer ${jwt}`,
           },
         }
-      )
-      .then((res) => {
-        if (res.status === 200) {
-          const fetchedRole =
-            roles.find((role) => role.code === res.data.privilege) || null;
-          setEmail(res.data.email);
-          setName(res.data.name);
-          setSelectedRole(fetchedRole);
-          setInitialData({
-            email: res.data.email,
-            name: res.data.name,
-            selectedRole: fetchedRole,
-          });
-          showSuccess();
-        }
-      })
-      .catch((err) => {
-        if (err) {
-          if (err.response.data.message === "Email already exists") {
-            showUserExistsError();
-          }
-        }
-      })
-      .finally(() => {
-        setIsSubmitting(false);
-      });
+      );
+
+      if (response.status === 200) {
+        const fetchedRole =
+          roles.find((role) => role.code === response.data.privilege) || null;
+        setEmail(response.data.email);
+        setName(response.data.name);
+        setSelectedRole(fetchedRole);
+        setInitialData({
+          email: response.data.email,
+          name: response.data.name,
+          selectedRole: fetchedRole,
+        });
+        showSuccess();
+      }
+    } catch (err) {
+      if (
+        err.response &&
+        err.response.data.message === "Email already exists"
+      ) {
+        showUserExistsError();
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const showSuccess = () => {
@@ -146,9 +145,9 @@ function Edit() {
       severity: "error",
       summary: "Error",
       detail: "User already exists",
-      life: 3000
-    })
-  }
+      life: 3000,
+    });
+  };
 
   return (
     <div className="w-5">

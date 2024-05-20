@@ -5,6 +5,7 @@ import InventoryIcon from "@mui/icons-material/Inventory";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import PersonIcon from "@mui/icons-material/Person";
 import StarIcon from "@mui/icons-material/Star";
+import GridViewIcon from '@mui/icons-material/GridView';
 
 import "./AdminMenu.css";
 
@@ -29,6 +30,18 @@ function AdminMenu() {
         <InventoryIcon fontSize="small" {...options.iconProps} />
       ),
       url: "/admin/products"
+    },
+    {
+      label: "New Category",
+      icon: (options) => <AddIcon fontSize="small" {...options.iconProps} />,
+      url: "/admin/category/add"
+    },
+    {
+      label: "Categories",
+      icon: (options) => (
+        <GridViewIcon fontSize="small" {...options.iconProps} />
+      ),
+      url: "/admin/categories"
     },
     {
       label: "Orders",

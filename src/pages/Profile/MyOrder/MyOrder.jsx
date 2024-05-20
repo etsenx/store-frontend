@@ -6,12 +6,14 @@ import { Column } from "primereact/column";
 import { FilterMatchMode } from "primereact/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { InputText } from "primereact/inputtext";
+import { Button } from "primereact/button";
+import { IconField } from "primereact/iconfield";
+import { InputIcon } from "primereact/inputicon";
 
 import "./MyOrder.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
-import { Button } from "primereact/button";
 
 function MyOrder() {
   const [products, setProducts] = useState([]);
@@ -48,13 +50,15 @@ function MyOrder() {
     return (
       <div className="flex justify-content-end">
         <span className="p-input-icon-left">
-          <i className="pi pi-search" />
-          <InputText
-            value={globalFilterValue}
-            onChange={onGlobalFilterChange}
-            className="p-inputtext-sm"
-            placeholder="Keyword Search"
-          />
+          <IconField iconPosition="left">
+            <InputIcon className="pi pi-search" />
+            <InputText
+              value={globalFilterValue}
+              onChange={onGlobalFilterChange}
+              className="p-inputtext-sm"
+              placeholder="Keyword Search"
+            />
+          </IconField>
         </span>
       </div>
     );

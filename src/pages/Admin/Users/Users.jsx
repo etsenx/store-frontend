@@ -129,9 +129,9 @@ function Users() {
         header={header}
       >
         <Column field="id" header="ID" className="w-1" />
-        <Column field="name" header="Name" className="w-2" />
+        <Column field="name" header="Name" sortable className="w-2" />
         <Column field="email" header="Email" className="w-4" />
-        <Column field="privilege" header="Role" className="w-2" />
+        <Column field="privilege" header="Role" sortable className="w-2" />
         <Column
           className="w-4"
           field="actions"

@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login, logout } from "../redux/authSlice";
@@ -36,6 +36,9 @@ import { default as AddProduct } from "../pages/Admin/Product/Add/Add";
 import Products from "../pages/Admin/Products/Products";
 import { default as EditProduct } from "../pages/Admin/Products/Edit/Edit";
 import { default as EditImageProduct } from "../pages/Admin/Products/EditImage/EditImage";
+import { default as AddCategory } from "../pages/Admin/Category/Add/Add"
+import Categories from "../pages/Admin/Categories/Categories";
+import { default as EditCategory } from "../pages/Admin/Categories/Edit/Edit";
 import Users from "../pages/Admin/Users/Users";
 import { default as EditUser } from "../pages/Admin/Users/Edit/Edit";
 
@@ -137,6 +140,9 @@ function App() {
           <Route path="product/add" element={<AddProduct />} />
           <Route path="products" element={<Products />} />
           <Route path="products/:id/edit" element={<EditProduct />} />
+          <Route path="category/add" element={<AddCategory />} />
+          <Route path="categories" element={<Categories />} />
+          <Route path="categories/:id/edit" element={<EditCategory />} />
           <Route
             path="products/:id/edit-image"
             element={<EditImageProduct />}
