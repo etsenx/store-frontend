@@ -12,6 +12,7 @@ import { InputIcon } from "primereact/inputicon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import "./Products.css";
+import axios from "axios";
 
 function Products() {
   const [products, setProducts] = useState([]);
@@ -22,20 +23,34 @@ function Products() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("https://dummyjson.com/products")
-      .then((res) => res.json())
-      .then((data) => {
-        setProducts(data.products);
+    axios
+      .get(`${import.meta.env.VITE_REACT_API_URL}/products`)
+      .then((res) => {console.log(res.data)
+        const productsWithIds = res.data.map((product, index) => ({
+          ...product,
+          id: index + 1,
+          shortenName: shortenProductName(product.name, 50)
+        }));
+        console.log(productsWithIds);
+        setProducts(productsWithIds);
       });
   }, []);
 
-  const handleEditButton = (data) => {
-    navigate(`/admin/products/${data.id}/edit`)
+  const shortenProductName = (name, maxLength) => {
+    if (name.length > maxLength) {
+      return name.substring(0, maxLength - 3) + "...";
+    }
+    return name;
   }
 
+  const handleEditButton = (data) => {
+    console.log(data);
+    // navigate(`/admin/products/${data.id}/edit`);
+  };
+
   const handleEditImageButton = (data) => {
-    navigate(`/admin/products/${data.id}/edit-image`)
-  }
+    navigate(`/admin/products/${data.id}/edit-image`);
+  };
 
   const onGlobalFilterChange = (e) => {
     const value = e.target.value;
@@ -80,14 +95,13 @@ function Products() {
         filters={filters}
         header={header}
       >
-        <Column field="id" header="ID" className="w-1" />
-        <Column field="title" header="Nama" sortable className="w-7" />
+        <Column field="id" header="ID" className="w-1" sortable />
+        <Column field="shortenName" header="Nama" sortable className="w-7" />
         <Column field="stock" header="Stock" sortable className="w-1" />
         <Column
           className="w-3"
           field="actions"
           header="Actions"
-          sortable
           body={(rowData) => (
             <>
               <Button
