@@ -42,7 +42,6 @@ function Add() {
         code: category._id,
       }));
       setCategories(categories);
-      console.log("run");
     } catch (err) {
       console.log(err);
     }
@@ -94,8 +93,7 @@ function Add() {
       if (err.response && err.response.status === 400) {
         showError();
       }
-    }
-      finally {
+    } finally {
       setIsSubmitting(false);
     }
   };
@@ -183,9 +181,7 @@ function Add() {
               id="product-seller"
               className="p-inputtext-sm p-0"
               value={sellerName}
-              onChange={(e) => {
-                setSellerName(e.target.value);
-              }}
+              onChange={(e) => setSellerName(e.target.value)}
             />
           </div>
         </div>

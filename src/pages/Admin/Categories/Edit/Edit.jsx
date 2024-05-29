@@ -91,7 +91,7 @@ function Edit() {
     toast.current.show({
       severity: "success",
       summary: "Success",
-      detail: "Profile Updated",
+      detail: "Category Updated",
       life: 3000,
     });
   };

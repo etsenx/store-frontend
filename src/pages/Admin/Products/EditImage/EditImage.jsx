@@ -1,19 +1,61 @@
 import PropTypes from "prop-types";
 
+import { memo, useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
+
 import { Toast } from "primereact/toast";
 import { Tooltip } from "primereact/tooltip";
 import { FileUpload } from "primereact/fileupload";
-import { useRef, useState } from "react";
 import { ProgressBar } from "primereact/progressbar";
 import { Tag } from "primereact/tag";
-
 import { Button } from "primereact/button";
+import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
+
+import axios from "axios";
+
+import Cookies from "js-cookie";
+
+import { AdvancedImage } from "@cloudinary/react";
+import cld from "../../../../utils/CloudinaryInstance";
+import { fill } from "@cloudinary/url-gen/actions/resize";
+
+import EditImageSkeleton from "./EditImageSkeleton";
+
+import { ClipLoader } from "react-spinners";
+
+import DeleteButton from "../../../../components/Button/Button";
 
 import "./EditImage.css";
 function EditImage() {
+  const { id } = useParams();
   const toast = useRef(null);
   const [totalSize, setTotalSize] = useState(0);
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedImages, setSelectedImages] = useState([]);
   const fileUploadRef = useRef(null);
+
+  useEffect(() => {
+    const jwt = Cookies.get("token");
+    axios
+      .get(`${import.meta.env.VITE_REACT_API_URL}/product/${id}`, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      })
+      .then((res) => {
+        const sortedImages = res.data.images.sort(
+          (a, b) => b.isPrimary - a.isPrimary
+        );
+        setImages(sortedImages);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, [id]);
 
   const onTemplateUpload = (e) => {
     let _totalSize = 0;
@@ -134,10 +176,209 @@ function EditImage() {
     );
   };
 
+  const ImageTemplate = memo(({ image, isPrimary, onDelete, onSave, link }) => {
+    const isSelected = selectedImages.includes(link);
+
+    return (
+      <div className="uploaded-image">
+        <AdvancedImage
+          cldImg={image}
+          className={`${isSelected && "on-hover"}`}
+        />
+        <div className="uploaded-image-action-button-container">
+          {isSelected ? (
+            <Button
+              type="button"
+              icon="pi pi-check"
+              className="p-button-rounded p-button-primary ml-auto action-button selected-button"
+              onClick={() => onDelete(link)}
+            />
+          ) : (
+            <>
+              {!isPrimary && (
+                <>
+                  <Tooltip
+                    target=".primary-button"
+                    content="Set as Primary"
+                    position="top"
+                    className="uploaded-image-tooltip"
+                  />
+                  <Button
+                    type="button"
+                    icon="pi pi-check-circle"
+                    className="p-button-rounded p-button-success ml-auto primary-button action-button"
+                    onClick={() => onSave(link)}
+                  />
+                </>
+              )}
+              <Tooltip
+                target=".delete-button"
+                content="Delete Image"
+                position="top"
+                className="uploaded-image-tooltip"
+              />
+              <Button
+                type="button"
+                icon="pi pi-trash"
+                className="p-button-rounded p-button-danger ml-auto delete-button action-button"
+                onClick={() => onDelete(link)}
+              />
+            </>
+          )}
+        </div>
+      </div>
+    );
+  });
+
+  ImageTemplate.displayName = "ImageTemplate";
+
+  ImageTemplate.propTypes = {
+    image: PropTypes.object.isRequired,
+    isPrimary: PropTypes.bool,
+    onDelete: PropTypes.func,
+    onSave: PropTypes.func,
+    link: PropTypes.string,
+  };
+
+  const uploadImage = async (e) => {
+    setIsSubmitting(true);
+    try {
+      const formData = new FormData();
+      e.files.forEach((file) => {
+        formData.append("files", file);
+      });
+      const jwt = Cookies.get("token");
+      const response = await axios.patch(
+        `${import.meta.env.VITE_REACT_API_URL}/product/${id}/edit-image`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        const sortedImages = response.data.images.sort(
+          (a, b) => b.isPrimary - a.isPrimary
+        );
+        setImages(sortedImages);
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDeleteClick = (link) => {
+    setSelectedImages((prevSelected) =>
+      prevSelected.includes(link)
+        ? prevSelected.filter((imageLink) => imageLink !== link)
+        : [...prevSelected, link]
+    );
+  };
+
+  const handleDeleteButtonClick = (e) => {
+    e.preventDefault();
+    confirmDelete();
+  };
+
+  const confirmDelete = () => {
+    confirmDialog({
+      message: "Are you sure you want to proceed?",
+      header: "Confirmation",
+      icon: "pi pi-exclamation-triangle",
+      defaultFocus: "accept",
+      accept: acceptDelete,
+    });
+  };
+
+  const confirmSave = (link) => {
+    confirmDialog({
+      message: "Are you sure you want to proceed?",
+      header: "Confirmation",
+      icon: "pi pi-exclamation-triangle",
+      defaultFocus: "accept",
+      accept: () => acceptSave(link),
+    });
+  };
+
+  const acceptDelete = async () => {
+    setIsSubmitting(true);
+    try {
+      const jwt = Cookies.get("token");
+      const response = await axios.delete(
+        `${import.meta.env.VITE_REACT_API_URL}/products/delete-images`,
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+          data: {
+            productId: id,
+            imagesLink: selectedImages,
+          },
+        }
+      );
+      if (response.status === 200) {
+        setImages(
+          images.filter(
+            (image) =>
+              !selectedImages.some(
+                (selectedImage) => selectedImage === image.link
+              )
+          )
+        );
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const acceptSave = async (link) => {
+    setIsSubmitting(true);
+    try {
+      const jwt = Cookies.get("token");
+      const response = await axios.patch(
+        `${import.meta.env.VITE_REACT_API_URL}/products/images/primary`,
+        {
+          productId: id,
+          imageLink: link,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        const updatedImages = images.map((image) => {
+          if (image.link === link) {
+            return { ...image, isPrimary: true };
+          }
+          return { ...image, isPrimary: false };
+        });
+
+        const sortedImages = updatedImages.sort(
+          (a, b) => b.isPrimary - a.isPrimary
+        );
+
+        setImages(sortedImages);
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const chooseOptions = {
     icon: "pi pi-fw pi-images",
     iconOnly: true,
-    className: "upload-buttons image-choose-btn p-button-rounded p-button-outlined",
+    className:
+      "upload-buttons image-choose-btn p-button-rounded p-button-outlined",
   };
   const uploadOptions = {
     icon: "pi pi-fw pi-cloud-upload",
@@ -152,13 +393,27 @@ function EditImage() {
       "upload-buttons image-cancel-btn p-button-danger p-button-rounded p-button-outlined",
   };
 
+  if (loading) {
+    return <EditImageSkeleton />;
+  }
+
+  if (isSubmitting) {
+    return (
+      <ClipLoader
+        color="#FEBD69"
+        loading={isSubmitting}
+        size={70}
+        cssOverride={{ display: "block", margin: "300px auto" }}
+      />
+    );
+  }
+
   return (
     <div className="w-full">
+      <Toast ref={toast}></Toast>
       <form className="edit-product-image-form ml-5">
         <h1 className="edit-product-image-title">Upload Product Images</h1>
         <div>
-          <Toast ref={toast}></Toast>
-
           <Tooltip
             target=".custom-choose-btn"
             content="Choose"
@@ -178,7 +433,6 @@ function EditImage() {
           <FileUpload
             ref={fileUploadRef}
             name="demo[]"
-            url="/api/upload"
             multiple
             accept="image/*"
             maxFileSize={1000000}
@@ -192,9 +446,39 @@ function EditImage() {
             chooseOptions={chooseOptions}
             uploadOptions={uploadOptions}
             cancelOptions={cancelOptions}
+            customUpload
+            uploadHandler={uploadImage}
           />
+          <div className="uploaded-images-container">
+            {images.map((image, index) => {
+              const cldImage = cld
+                .image(image.link)
+                .resize(fill().width(100).height(100));
+              return (
+                <ImageTemplate
+                  key={index}
+                  image={cldImage}
+                  isPrimary={image.isPrimary}
+                  onDelete={handleDeleteClick}
+                  onSave={confirmSave}
+                  link={image.link}
+                />
+              );
+            })}
+          </div>
+          {selectedImages.length !== 0 && (
+            <DeleteButton
+              className="add-product-button mt-3"
+              disabled={isSubmitting}
+              style={{ opacity: isSubmitting ? 0.6 : 1 }}
+              onClick={handleDeleteButtonClick}
+            >
+              {isSubmitting ? "Loading..." : "DELETE IMAGES"}
+            </DeleteButton>
+          )}
         </div>
       </form>
+      <ConfirmDialog draggable={false} />
     </div>
   );
 }
@@ -204,4 +488,4 @@ export default EditImage;
 EditImage.propTypes = {
   formatSize: PropTypes.string,
   onRemove: PropTypes.func,
-}
+};
