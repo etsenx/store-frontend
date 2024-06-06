@@ -1,0 +1,37 @@
+.review-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  outline: none;
+}
+
+.review-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.review-stars {
+  display: flex;
+  justify-content: start;
+  margin-bottom: 10px;
+  font-size: 44px;
+}
+
+.review-textbox {
+  width: 377px;
+  height: 100px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}

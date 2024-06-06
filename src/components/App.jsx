@@ -15,6 +15,7 @@ import {
 import {
   faStar as faStarReg,
   faImage as faImageReg,
+  faStarHalfStroke,
 } from "@fortawesome/free-regular-svg-icons";
 
 import Home from "../pages/Home";
@@ -36,7 +37,7 @@ import { default as AddProduct } from "../pages/Admin/Product/Add/Add";
 import Products from "../pages/Admin/Products/Products";
 import { default as EditProduct } from "../pages/Admin/Products/Edit/Edit";
 import { default as EditImageProduct } from "../pages/Admin/Products/EditImage/EditImage";
-import { default as AddCategory } from "../pages/Admin/Category/Add/Add"
+import { default as AddCategory } from "../pages/Admin/Category/Add/Add";
 import Categories from "../pages/Admin/Categories/Categories";
 import { default as EditCategory } from "../pages/Admin/Categories/Edit/Edit";
 import Users from "../pages/Admin/Users/Users";
@@ -62,6 +63,7 @@ import "./App.css";
 library.add(
   faStar,
   faStarReg,
+  faStarHalfStroke,
   faX,
   faTrashCan,
   faTrash,
@@ -88,6 +90,7 @@ function App() {
           dispatch(login(res.data));
         })
         .catch((err) => {
+          Cookies.remove("token");
           console.log(err);
         })
         .finally(() => {
@@ -120,7 +123,7 @@ function App() {
       <Routes>
         <Route path="/">
           <Route index element={<Home />} />
-          <Route path="/search/:id" element={<Search />} />
+          <Route path="/search/:term" element={<Search />} />
           <Route path="/product/:id" element={<Product />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />

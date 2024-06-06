@@ -17,6 +17,14 @@
   color: #FEBD69;
 }
 
+.product-card-image-container {
+  width: 260px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .product-card-title-container {
   display: block;
   height: 110px;
@@ -58,4 +66,13 @@
 
 .product-card-button:active {
   opacity: 0.8;
+}
+
+.product-image.loading {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.product-image.loaded {
+  opacity: 1;
 }
