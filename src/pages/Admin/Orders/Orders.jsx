@@ -17,11 +17,9 @@ import axios from "axios";
 
 import Cookies from "js-cookie";
 
-import "./Products.css";
-
-function Products() {
-  const [products, setProducts] = useState([]);
-  const [productsCount, setProductsCount] = useState(0);
+function Orders() {
+  const [orders, setOrders] = useState([]);
+  const [ordersCount, setOrdersCount] = useState(0);
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
@@ -30,55 +28,47 @@ function Products() {
   const toast = useRef(null);
 
   useEffect(() => {
+    const jwt = Cookies.get("token");
     axios
-      .get(`${import.meta.env.VITE_REACT_API_URL}/products`)
+      .get(`${import.meta.env.VITE_REACT_API_URL}/orders`, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      })
       .then((res) => {
-        const productsWithIds = res.data.map((product) => ({
-          ...product,
-          id: product._id,
-          shortenName: shortenProductName(product.name, 50)
-        }));
-        setProducts(productsWithIds);
-        setProductsCount(productsWithIds.length);
+        setOrders(res.data);
+        setOrdersCount(res.data.length);
       });
   }, []);
 
-  const shortenProductName = (name, maxLength) => {
-    if (name.length > maxLength) {
-      return name.substring(0, maxLength - 3) + "...";
-    }
-    return name;
-  }
-
   const handleEditButton = (data) => {
-    navigate(`/admin/products/${data._id}/edit`);
-  };
-
-  const handleEditImageButton = (data) => {
-    navigate(`/admin/products/${data._id}/edit-image`);
+    navigate(`/admin/orders/${data.id}/edit`);
   };
 
   const handleDeleteButton = async (data) => {
     try {
       const jwt = Cookies.get("token");
-      const response = await axios.delete(`${import.meta.env.VITE_REACT_API_URL}/product/${data._id}`, {
-        headers: {
-          Authorization: `Bearer ${jwt}`
+      const response = await axios.delete(
+        `${import.meta.env.VITE_REACT_API_URL}/order/${data.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
         }
-      })
+      );
       if (response.status === 204) {
-        const updatedProducts = products.filter((product) => product._id !== data._id);
-        setProducts(updatedProducts);
-        setProductsCount(updatedProducts.length);
+        const updatedOrders = orders.filter((order) => order.id !== data.id);
+        setOrders(updatedOrders);
+        setOrdersCount(updatedOrders.length);
         showDeleteSuccess();
       }
     } catch (err) {
       console.log(err);
       if (err.response && err.response.status === 404) {
-        console.err("No Product Found");
+        console.err("No Orders Found");
       }
     }
-  }
+  };
 
   const confirmDelete = (data) => {
     confirmDialog({
@@ -88,7 +78,7 @@ function Products() {
       defaultFocus: "accept",
       accept: () => handleDeleteButton(data),
     });
-  }
+  };
 
   const onGlobalFilterChange = (e) => {
     const value = e.target.value;
@@ -124,16 +114,16 @@ function Products() {
       summary: "Success",
       detail: "Product successfully deleted",
       life: 3000,
-    })
-  }
+    });
+  };
 
   const header = renderHeader();
   return (
     <div className="flex flex-column w-full">
       <Toast ref={toast} />
-      <h2>Total Products: {productsCount}</h2>
+      <h2>Total Orders: {ordersCount}</h2>
       <DataTable
-        value={products}
+        value={orders}
         size="small"
         paginator
         showGridlines
@@ -143,11 +133,22 @@ function Products() {
         filters={filters}
         header={header}
       >
-        <Column field="id" header="ID" className="w-1" sortable />
-        <Column field="shortenName" header="Nama" sortable className="w-7" />
-        <Column field="stock" header="Stock" sortable className="w-1" />
+        <Column field="id" header="ID" className="w-4" sortable />
         <Column
+          field="paymentStatus"
+          header="Payment Status"
+          sortable
           className="w-3"
+          body={(rowData) => (rowData.paymentStatus ? "PAID" : "NOT PAID")}
+        />
+        <Column
+          field="orderStatus"
+          header="Order Status"
+          sortable
+          className="w-3"
+        />
+        <Column
+          className="w-2"
           field="actions"
           header="Actions"
           body={(rowData) => (
@@ -157,12 +158,6 @@ function Products() {
                 className="products__action-button px-1 py-0"
                 style={{ backgroundColor: "rgb(59 130 246)" }}
                 icon={<FontAwesomeIcon icon="fa-solid fa-pencil" size="sm" />}
-              />
-              <Button
-                onClick={() => handleEditImageButton(rowData)}
-                className="products__action-button px-1 py-0"
-                style={{ backgroundColor: "rgb(5 150 105)" }}
-                icon={<FontAwesomeIcon icon="fa-regular fa-image" size="sm" />}
               />
               <Button
                 onClick={() => confirmDelete(rowData)}
@@ -181,4 +176,4 @@ function Products() {
   );
 }
 
-export default Products;
+export default Orders;

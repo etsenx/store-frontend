@@ -1,7 +1,7 @@
-// Logout.jsx
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { logout } from '../../redux/authSlice';
+import { logout } from '../../redux/auth/authSlice';
+import { clearCart } from '../../redux/cart/cartSlice';
 import { useNavigate } from 'react-router-dom';
 import Cookies from "js-cookie";
 
@@ -10,15 +10,14 @@ function Logout() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Perform logout actions
     dispatch(logout());
+    dispatch(clearCart())
     Cookies.remove("token");
 
-    // Navigate to the home page or any other page after logout
     navigate('/');
   }, [dispatch, navigate]);
 
-  return null; // This component doesn't render anything
+  return null;
 }
 
 export default Logout;

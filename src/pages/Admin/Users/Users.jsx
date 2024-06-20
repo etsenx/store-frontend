@@ -39,12 +39,13 @@ function Users() {
       })
       .then((res) => {
         setUsers(res.data);
+        console.log(res.data);
         setUsersCount(res.data.length);
       });
   }, []);
 
   const handleEditButton = (data) => {
-    navigate(`/admin/users/${data.id}/edit`);
+    navigate(`/admin/users/${data._id}/edit`);
   };
 
   const handleDeleteButton = (data) => {
@@ -57,7 +58,7 @@ function Users() {
       })
       .then((res) => {
         if (res.status === 204) {
-          const updatedUsers = users.filter((user) => user.id !== data.id);
+          const updatedUsers = users.filter((user) => user._id !== data._id);
           setUsers(updatedUsers);
           setUsersCount(updatedUsers.length);
           showSuccessDelete();
@@ -128,7 +129,7 @@ function Users() {
         filters={filters}
         header={header}
       >
-        <Column field="id" header="ID" className="w-1" />
+        <Column field="_id" header="ID" className="w-1" />
         <Column field="name" header="Name" sortable className="w-2" />
         <Column field="email" header="Email" className="w-4" />
         <Column field="privilege" header="Role" sortable className="w-2" />

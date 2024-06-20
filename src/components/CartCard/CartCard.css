@@ -18,6 +18,15 @@
   font-weight: 300;
   font-size: 18px;
   width: 200px;
+  display: -webkit-box;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cart-card__product-name:hover {
+  color: #FED669;
 }
 
 .cart-card__price {

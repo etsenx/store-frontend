@@ -9,7 +9,7 @@ import { faStar as regularStar } from "@fortawesome/free-regular-svg-icons";
 import "./ReviewModal.css";
 
 const ReviewModal = ({ isOpen, onRequestClose, onSubmit }) => {
-  const [rating, setRating] = useState(5); // Default to 5 stars
+  const [rating, setRating] = useState(5);
   const [reviewText, setReviewText] = useState("");
 
   const handleRatingClick = (newRating) => {
@@ -28,7 +28,7 @@ const ReviewModal = ({ isOpen, onRequestClose, onSubmit }) => {
   };
 
   const handleCloseModal = () => {
-    setRating(5); // Reset rating to 5 stars when closing the modal
+    setRating(5);
     onRequestClose();
   };
 

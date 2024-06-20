@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import Button from '../Button/Button';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import logo from '../../assets/logo.png';
 import dropdown from '../../assets/dropdown-icon.png';
@@ -10,6 +10,14 @@ import dropdown from '../../assets/dropdown-icon.png';
 import { AdvancedImage } from "@cloudinary/react";
 import cld from '../../utils/CloudinaryInstance';
 import { fill } from '@cloudinary/url-gen/actions/resize';
+
+import { selectAuth } from '../../redux/auth/authSlice';
+import { selectCart } from '../../redux/cart/cartSlice';
+
+import { useDispatch } from 'react-redux';
+import { getCart } from '../../redux/cart/cartService';
+
+import Cookies from "js-cookie";
 
 import './Navbar.css';
 import 'primeicons/primeicons.css';
@@ -35,11 +43,12 @@ const useOutsideClick = (callback) => {
 };
 
 function Navbar() {
-  const { isAuthenticated, user } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
+  const { isAuthenticated, user } = useSelector(selectAuth);
+  const { cartCount } = useSelector(selectCart);
   const [isOpen, setIsOpen] = useState(false);
   const [productSearch, setProductSearch] = useState('');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   function handleDropdownClick() {
     setIsOpen(!isOpen);
@@ -66,6 +75,12 @@ function Navbar() {
     userAvatar = cld.image(user.avatar).resize(fill().width(35).height(35));
   }
 
+  useEffect(() => {
+    if (Cookies.get("token")) {
+      dispatch(getCart());
+    }
+  }, [dispatch]);
+
   return (
     <div className='navbar'>
       <Link to='/'>
@@ -78,6 +93,11 @@ function Navbar() {
           className='search-bar'
           value={productSearch}
           onChange={handleInputChange}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleSubmitSearch();
+            }
+          }}
         />
         <button className='search-button' onClick={handleSubmitSearch}>
           <i style={{ fontWeight: '800' }} className='pi pi-search'></i>
@@ -85,7 +105,7 @@ function Navbar() {
       </div>
       <div className='right-container'>
         <Link to={isAuthenticated ? "/cart" : "/login"}>
-          Cart <span className='cart-count'>0</span>
+          Cart <span className='cart-count'>{cartCount}</span>
         </Link>
 
         {isAuthenticated ? (

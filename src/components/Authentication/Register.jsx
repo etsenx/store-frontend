@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 
 import Cookies from "js-cookie";
 
-import { login } from "../../redux/authSlice";
+import { login } from "../../redux/auth/authSlice";
 
 import { Toast } from "primereact/toast";
 
@@ -26,7 +26,7 @@ function Register() {
   const toast = useRef(null);
 
   function handleInputChange(e) {
-    const nameRegex = /[^A-Za-z]/;
+    const nameRegex = /[^A-Za-z\s]/;
     if (e.target.id === "email") {
       setEmail(e.target.value);
     } else if (e.target.id === "password") {
@@ -79,7 +79,8 @@ function Register() {
             navigate("/");
           });
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         showError();
       })
       .finally(() => {

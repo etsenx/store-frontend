@@ -70,7 +70,7 @@ function Add() {
     setIsSubmitting(true);
     try {
       const jwt = Cookies.get("token");
-      const response = await axios.post(
+      await axios.post(
         `${import.meta.env.VITE_REACT_API_URL}/product/add`,
         {
           name,
@@ -86,7 +86,6 @@ function Add() {
           },
         }
       );
-      console.log(response);
       showSuccess();
     } catch (err) {
       console.log(err);

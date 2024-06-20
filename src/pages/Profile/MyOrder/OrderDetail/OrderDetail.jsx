@@ -4,91 +4,135 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Divider } from "primereact/divider";
 import { DataView } from "primereact/dataview";
-import { Image } from "primereact/image";
-import { Link } from "react-router-dom";
-import { Button } from "primereact/button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link, useParams } from "react-router-dom";
+import Cookies from "js-cookie";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import cld from "../../../../utils/CloudinaryInstance";
+import { limitFill } from "@cloudinary/url-gen/actions/resize";
+import { AdvancedImage } from "@cloudinary/react";
 
 function OrderDetail() {
-  const details1 = [
-    {
-      key: "ID",
-      value: "65f8d580916f6f81cd61f75e",
-    },
-    {
-      key: "Status",
-      value: "Processing",
-    },
-    {
-      key: "Date",
-      value: "10/4/2023, 11:40:19 AM",
-    },
-  ];
+  const { id } = useParams();
 
-  const details2 = [
-    {
-      key: "Name",
-      value: "Steven Steven",
-    },
-    {
-      key: "Phone No",
-      value: "082230307777",
-    },
-    {
-      key: "Address",
-      value: "Jl Rumah No 55 Sei Rumah Raya",
-    },
-  ];
+  const [detail, setDetail] = useState(null);
 
-  const details3 = [
-    {
-      key: "Status",
-      value: "Not Paid",
-    },
-    {
-      key: "Method",
-      value: "COD",
-    },
-    {
-      key: "Stripe ID",
-      value: "Nill",
-    },
-    {
-      key: "Amount Paid",
-      value: "$1084.32",
-    },
-  ];
+  useEffect(() => {
+    const fetchOrder = async () => {
+      const jwt = Cookies.get("token");
+      try {
+        const order = await axios.get(
+          `${import.meta.env.VITE_REACT_API_URL}/order/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${jwt}`,
+            },
+          }
+        );
+        setDetail(order.data);
+      } catch (error) {
+        console.error("Failed to fetch order:", error);
+      }
+    };
 
-  const orderedItem = [
-    {
-      title: "Bose QuietComfort 35 II Wireless Bluetooth Headphones",
-      price: "$315",
-      qty: "2",
-      image: "https://dummyimage.com/260x200/000/fff.jpg",
-    },
-    {
-      title: "Iphone 16 Pro",
-      price: "$2015",
-      qty: "5",
-      image: "https://dummyimage.com/260x200/000/fff.jpg",
-    },
-    {
-      title: "Monitor AOC",
-      price: "$99",
-      qty: "1",
-      image: "https://dummyimage.com/260x200/000/fff.jpg",
-    },
-  ];
+    fetchOrder();
+  }, [id]);
+
+  const formatDate = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      hour12: true,
+    };
+    return new Date(dateString).toLocaleString("en-US", options);
+  };
+
+  const details1 = detail
+    ? [
+        {
+          key: "ID",
+          value: id,
+        },
+        {
+          key: "Status",
+          value: detail.status,
+        },
+        {
+          key: "Date",
+          value: formatDate(detail.createdAt),
+        },
+      ]
+    : [];
+
+  const details2 = detail
+    ? [
+        {
+          key: "Name",
+          value: detail.shippingDetails.name,
+        },
+        {
+          key: "Phone No",
+          value: detail.shippingDetails.phoneNumber,
+        },
+        {
+          key: "Address",
+          value: detail.shippingDetails.address,
+        },
+      ]
+    : [];
+
+  const details3 = detail
+    ? [
+        {
+          key: "Status",
+          value: detail.paymentStatus ? "PAID" : "NOT PAID",
+        },
+        {
+          key: "Method",
+          value: detail.paymentMethod.toUpperCase(),
+        },
+        {
+          key: "Stripe ID",
+          value: "Nill",
+        },
+        {
+          key: "Amount Paid",
+          value: `$${detail.amount}`,
+        },
+      ]
+    : [];
+
+  const orderedItem = detail
+    ? detail.orderedItems.map((item) => {
+        return {
+          title:
+            item.productName.length > 100
+              ? item.productName.substring(0, 100) + "..."
+              : item.productName,
+          price: `$${item.pricePerItem * item.quantity}`,
+          qty: `${item.quantity}`,
+          image: item.image,
+          productId: item.productId
+        };
+      })
+    : [];
 
   const itemTemplate = (item, index) => {
+    const productImage = cld
+      .image(item.image)
+      .resize(limitFill().width(100).height(70));
     return (
       <div
-        className="flex justify-content-around text-black-alpha-90 w-full"
+        className="flex justify-content-around text-black-alpha-90 w-full mb-4"
         key={index}
       >
-        <Image src={item.image} alt={item.title} width="100px" height="70px" />
+        <AdvancedImage cldImg={productImage} />
         <Link
-          to="/product/id"
+          to={`/product/${item.productId}`}
           className="w-5 text-black-alpha-50 underline font-semibold my-auto"
         >
           <span>{item.title}</span>
@@ -113,18 +157,6 @@ function OrderDetail() {
 
   return (
     <div className="order-detail-page relative">
-      <Button
-        className="absolute right-0"
-        label="Invoice"
-        size="small"
-        style={{ background: "rgb(5 150 105)", borderColor: "rgb(5 150 105)", top: "-10px" }}
-        icon={
-          <FontAwesomeIcon
-            style={{ marginRight: "5px" }}
-            icon="fa-solid fa-print"
-          />
-        }
-      />
       <div className="order-detail">
         <h2 className="">Your Order Details</h2>
         <DataTable
@@ -139,7 +171,25 @@ function OrderDetail() {
           rowClassName="order-table__row"
         >
           <Column style={{ width: "180px" }} field="key"></Column>
-          <Column field="value"></Column>
+          <Column
+            body={(rowData) => (
+              <span
+                className={`${
+                  rowData.key === "Status"
+                    ? rowData.value === "Processing"
+                      ? "text-red-500"
+                      : rowData.value === "Shipped"
+                      ? "text-yellow-500"
+                      : rowData.value === "Delivered"
+                      ? "text-green-500"
+                      : "text-gray-500"
+                    : ""
+                }`}
+              >
+                {rowData.value}
+              </span>
+            )}
+          ></Column>
         </DataTable>
       </div>
       <div className="order-detail">
@@ -167,7 +217,21 @@ function OrderDetail() {
           rowClassName="order-table__row"
         >
           <Column style={{ width: "300px" }} field="key"></Column>
-          <Column field="value"></Column>
+          <Column
+            body={(rowData) => (
+              <span
+                className={`${
+                  rowData.key === "Status"
+                    ? rowData.value === "PAID"
+                      ? "text-green-500"
+                      : "text-red-500"
+                    : ""
+                }`}
+              >
+                {rowData.value}
+              </span>
+            )}
+          ></Column>
         </DataTable>
       </div>
       <div className="order-items">

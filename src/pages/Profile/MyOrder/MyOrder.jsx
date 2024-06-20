@@ -10,25 +10,30 @@ import { Button } from "primereact/button";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 
+import axios from "axios";
+import Cookies from "js-cookie";
+
 import "./MyOrder.css";
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 
 function MyOrder() {
-  const [products, setProducts] = useState([]);
+  const [orders, setOrders] = useState([]);
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
   const [globalFilterValue, setGlobalFilterValue] = useState("");
   const navigate = useNavigate();
 
-  // Render dummy products data
   useEffect(() => {
-    fetch("https://dummyjson.com/products")
-      .then((res) => res.json())
-      .then((data) => {
-        setProducts(data.products);
+    const jwt = Cookies.get("token");
+    axios
+      .get(`${import.meta.env.VITE_REACT_API_URL}/orders/me`, {
+        headers: { Authorization: `Bearer ${jwt}` },
+      })
+      .then((res) => {
+        setOrders(res.data);
       });
   }, []);
 
@@ -64,11 +69,19 @@ function MyOrder() {
     );
   };
 
+  const amountBodyTemplate = (rowData) => {
+    return `$${rowData.amount}`;
+  };
+
+  const paymentStatusBodyTemplate = (rowData) => {
+    return rowData.paymentStatus ? "PAID" : "NOT PAID";
+  };
+
   const header = renderHeader();
   return (
     <div className="my-order-page">
       <DataTable
-        value={products}
+        value={orders}
         tableStyle={{ minWidth: "1280px" }}
         size="small"
         paginator
@@ -82,21 +95,23 @@ function MyOrder() {
       >
         <Column field="id" sortable filterField="id" header="Order Id"></Column>
         <Column
-          field="price"
+          field="amount"
           sortable
-          filterField="price"
+          filterField="amount"
           header="Amount"
+          body={amountBodyTemplate}
         ></Column>
         <Column
-          field="title"
+          field="paymentStatus"
           sortable
-          filterField="title"
+          filterField="paymentStatus"
           header="Payment Status"
+          body={paymentStatusBodyTemplate}
         ></Column>
         <Column
-          field="stock"
+          field="orderStatus"
           sortable
-          filterField="stock"
+          filterField="orderStatus"
           header="Order Status"
         ></Column>
         <Column
@@ -109,12 +124,6 @@ function MyOrder() {
                 className="my-order__action-button px-1 py-0"
                 style={{ backgroundColor: "rgb(59 130 246)" }}
                 icon={<FontAwesomeIcon icon="fa-solid fa-eye" size="sm" />}
-              />
-              <Button
-                // onClick={() => handleViewDetail(rowData)}
-                className="my-order__action-button px-1 py-0"
-                  style={{ backgroundColor: "rgb(5 150 105)" }}
-                icon={<FontAwesomeIcon icon="fa-solid fa-print" size="sm" />}
               />
             </div>
           )}

@@ -5,7 +5,8 @@ import { useRef, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
-import { login } from "../../redux/authSlice";
+import { login } from "../../redux/auth/authSlice";
+import { getCart } from "../../redux/cart/cartService";
 
 import axios from "axios";
 
@@ -43,6 +44,7 @@ function Login() {
           })
           .then((res) => {
             dispatch(login(res.data));
+            dispatch(getCart());
           });
         navigate("/");
       })
@@ -100,11 +102,11 @@ function Login() {
         onChange={handleInputChange}
         autoComplete="current-password"
       />
-      <Link className="forgot-password" to="/password/forgot">
+      {/* <Link className="forgot-password" to="/password/forgot">
         Forgot Password?
-      </Link>
+      </Link> */}
       <button
-        className="authentication-button"
+        className="authentication-button mt-2"
         disabled={isSubmitting}
         style={{ opactiy: isSubmitting ? 0.6 : 1 }}
       >

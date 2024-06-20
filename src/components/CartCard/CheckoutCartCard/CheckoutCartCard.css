@@ -1,0 +1,17 @@
+.checkout-cart-card {
+  align-items: start;
+}
+
+.checkout-cart-card .cart-card__image {
+  width: 100px;
+}
+
+.checkout-cart-card .cart-card__product-name {
+  width: 350px;
+}
+
+.checkout-cart-card .cart-card__price {
+  font-size: 15px;
+  margin-right: 100px;
+  color: black;
+}

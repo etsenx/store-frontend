@@ -34,9 +34,9 @@ function Categories() {
         Authorization: `Bearer ${jwt}`,
       },
     }).then((res) => {
-      const categoriesWithIds = res.data.map((category, index) => ({
+      const categoriesWithIds = res.data.map((category) => ({
         ...category,
-        id: index + 1,
+        id: category._id,
       }));
       setCategories(categoriesWithIds);
       setCategoriesCount(categoriesWithIds.length);

@@ -1,8 +1,10 @@
-import { useEffect, useState, useMemo, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState, useMemo, useCallback, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import Modal from "react-modal";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { selectAuth } from "../../redux/auth/authSlice";
+import { addToCart } from "../../redux/cart/cartService";
 
 import cld from "../../utils/CloudinaryInstance";
 import { AdvancedImage } from "@cloudinary/react";
@@ -15,6 +17,7 @@ import { v4 as uuidv4 } from "uuid";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
+import ObjectId from "bson-objectid";
 
 import ReviewStars from "../../components/ReviewStars/ReviewStars";
 import Reviews from "../../components/Reviews/Reviews";
@@ -22,10 +25,13 @@ import Button from "../../components/Button/Button";
 import ReviewModal from "../../components/ReviewModal/ReviewModal"; // Import the modal
 
 import "./Product.css";
+import { ConfirmDialog } from "primereact/confirmdialog";
+import { Toast } from "primereact/toast";
 
 Modal.setAppElement("#root");
 
 function Product() {
+  const toast = useRef();
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [stockStatus, setStockStatus] = useState(false);
@@ -36,69 +42,17 @@ function Product() {
   const [isPrimaryImageLoaded, setIsPrimaryImageLoaded] = useState(false);
   const [isSecondaryImageLoaded, setIsSecondaryImageLoaded] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const { isAuthenticated } = useSelector(selectAuth);
 
   const [reviewsFirst, setReviewsFirst] = useState(0);
   const [reviewsRowsPerPage, setReviewsRowsPerPage] = useState(3);
   const [totalReviews, setTotalReviews] = useState(0);
-
-  // const [fetchedReviews, setFetchedReviews] = useState([]);
-
-  // const fetchReviews = useCallback(
-  //   async (page) => {
-  //     try {
-  //       const existingPageData = fetchedReviews.find((data) => data.page === page);
-  //       if (existingPageData) {
-  //         console.log("Reviews for page", page, "already fetched:", existingPageData.reviews);
-  //         return;
-  //       }
-  //       const res = await axios.get(
-  //         `${import.meta.env.VITE_REACT_API_URL}/product/${id}/reviews`,
-  //         {
-  //           params: { page, limit: reviewsRowsPerPage },
-  //         }
-  //       );
-  //       const reviews = res.data.reviews;
-  //       const userIds = reviews.map((review) => review.user);
-  //       const userRes = await axios.post(
-  //         `${import.meta.env.VITE_REACT_API_URL}/users/username`,
-  //         { userIds }
-  //       );
-  //       const users = userRes.data;
-
-  //       const userMapping = users.reduce((acc, user) => {
-  //         acc[user._id] = user.name;
-  //         return acc;
-  //       }, {});
-  //       const reviewsWithUsernames = reviews.map((review) => ({
-  //         ...review,
-  //         userName: userMapping[review.user] || review.user,
-  //       }));
-
-  //       setProduct((prevProduct) => ({
-  //         ...prevProduct,
-  //         reviews: !prevProduct.reviews
-  //           ? reviewsWithUsernames
-  //           : [...prevProduct.reviews, ...reviewsWithUsernames],
-  //       }));
-  //       setTotalReviews(res.data.totalReviews);
-  //       setFetchedReviews((prevFetchedReviews) => {
-  //         const result = [
-  //           ...prevFetchedReviews,
-  //           { page, reviews: reviewsWithUsernames, totalReviews: res.data.totalReviews },
-  //         ];
-  //         console.log(result);
-  //         return result;
-  //       });
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   },
-  //   [id, fetchedReviews]
-  // );
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const getUserIdFromToken = () => {
     const jwt = Cookies.get("token");
+    if (!jwt) return false;
     const decoded = jwtDecode(jwt);
     return decoded._id;
   };
@@ -139,6 +93,18 @@ function Product() {
   }, [id]);
 
   const fetchProductData = useCallback(async () => {
+    if (!ObjectId.isValid(id)) {
+      navigate("/", {
+        state: {
+          toast: {
+            severity: "error",
+            summary: "Error",
+            detail: "Product not found",
+          },
+        },
+      });
+      return;
+    }
     try {
       const res = await axios.get(
         `${import.meta.env.VITE_REACT_API_URL}/product/${id}`
@@ -173,7 +139,7 @@ function Product() {
     } finally {
       setLoading(false);
     }
-  }, [id, fetchAllReviews]);
+  }, [id, fetchAllReviews, navigate]);
 
   useEffect(() => {
     fetchProductData();
@@ -225,7 +191,7 @@ function Product() {
             },
           }
         );
-       fetchProductData()
+        fetchProductData();
       } catch (err) {
         console.log(err);
       } finally {
@@ -251,15 +217,32 @@ function Product() {
       ));
   }, [product.reviews, reviewsFirst, reviewsRowsPerPage]);
 
-  // const onReviewsPageChange = (event) => {
-  //   const newPage = event.first / reviewsRowsPerPage + 1;
-  //   setReviewsFirst(event.first);
-  //   fetchReviews(newPage);
-  // };
-
   const onReviewsPageChange = (event) => {
     setReviewsFirst(event.first);
     setReviewsRowsPerPage(event.rows);
+  };
+
+  const addItemToCart = async () => {
+    if (!stockStatus) {
+      return;
+    }
+    if (!product.stock < requestCount) {
+      toast.current.show({
+        severity: "error",
+        summary: "Insufficient Stock",
+        detail: "Insufficient stock for this product",
+        life: 3000,
+      });
+      return;
+    }
+    const reqProduct = {
+      productId: product._id,
+      image: product.images[0],
+      name: product.name,
+      price: product.price,
+      reqCount: requestCount,
+    };
+    dispatch(addToCart(reqProduct));
   };
 
   if (loading) {
@@ -275,6 +258,7 @@ function Product() {
 
   return (
     <>
+      <Toast ref={toast} />
       <div className="product-page">
         <div className="product-page-container">
           <div className="product-page-image-container">
@@ -360,7 +344,13 @@ function Product() {
                 {" "}
                 +{" "}
               </button>
-              <Button className="product-page-add">Add to Cart</Button>
+              <Button
+                className="product-page-add"
+                onClick={addItemToCart}
+                isDisabled={!stockStatus}
+              >
+                Add to Cart
+              </Button>
             </div>
             <hr />
             <p style={{ margin: "25px 0" }}>
@@ -388,7 +378,9 @@ function Product() {
             </p>
             {isAuthenticated && product.reviews ? (
               product.reviews.some((review) => review.user === userId) ? (
-                <p style={{color: "red"}}>You have already submitted a review</p>
+                <p style={{ color: "red" }}>
+                  You have already submitted a review
+                </p>
               ) : (
                 <Button
                   className="product-page-submit-review"
@@ -398,7 +390,7 @@ function Product() {
                 </Button>
               )
             ) : (
-              <p className="">Login to submit a review</p>
+              <p>Login to submit a review</p>
             )}
           </div>
         </div>
@@ -425,6 +417,7 @@ function Product() {
         onRequestClose={handleModalClose}
         onSubmit={handleReviewSubmit}
       />
+      <ConfirmDialog draggable={false} />
     </>
   );
 }
