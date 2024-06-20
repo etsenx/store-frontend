@@ -78,6 +78,11 @@ function Navbar() {
           className='search-bar'
           value={productSearch}
           onChange={handleInputChange}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleSubmitSearch();
+            }
+          }}
         />
         <button className='search-button' onClick={handleSubmitSearch}>
           <i style={{ fontWeight: '800' }} className='pi pi-search'></i>

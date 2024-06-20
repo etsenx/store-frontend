@@ -99,6 +99,7 @@ function Product() {
 
   const getUserIdFromToken = () => {
     const jwt = Cookies.get("token");
+    if (!jwt) return false;
     const decoded = jwtDecode(jwt);
     return decoded._id;
   };

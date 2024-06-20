@@ -42,6 +42,7 @@ import Categories from "../pages/Admin/Categories/Categories";
 import { default as EditCategory } from "../pages/Admin/Categories/Edit/Edit";
 import Users from "../pages/Admin/Users/Users";
 import { default as EditUser } from "../pages/Admin/Users/Edit/Edit";
+import Reviews from "../pages/Admin/Reviews/Reviews";
 
 import AdminLayout from "../layout/AdminLayout";
 import HeaderLayout from "../layout/HeaderLayout";
@@ -152,6 +153,7 @@ function App() {
           />
           <Route path="users" element={<Users />} />
           <Route path="users/:id/edit" element={<EditUser />} />
+          <Route path="reviews" element={<Reviews />} />
         </Route>
       </Routes>
       <FooterLayout />

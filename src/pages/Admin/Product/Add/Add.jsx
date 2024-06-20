@@ -86,7 +86,6 @@ function Add() {
           },
         }
       );
-      console.log(response);
       showSuccess();
     } catch (err) {
       console.log(err);
