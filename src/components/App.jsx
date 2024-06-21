@@ -1,5 +1,10 @@
-import { Suspense, useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useEffect, useState } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login, logout } from "../redux/authSlice";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -47,10 +52,6 @@ import Reviews from "../pages/Admin/Reviews/Reviews";
 import AdminLayout from "../layout/AdminLayout";
 import HeaderLayout from "../layout/HeaderLayout";
 import FooterLayout from "../layout/FooterLayout";
-
-import { AdvancedImage } from "@cloudinary/react";
-import { fill } from "@cloudinary/url-gen/actions/resize";
-import cld from "../utils/CloudinaryInstance";
 
 import Cookies from "js-cookie";
 
@@ -114,13 +115,9 @@ function App() {
     );
   }
 
-  const myImage = cld.image("cld-sample");
-  myImage.resize(fill().width(250).height(250));
-
   return (
     <Router>
       <HeaderLayout />
-      {/* <AdvancedImage cldImg={myImage} /> */}
       <Routes>
         <Route path="/">
           <Route index element={<Home />} />
@@ -139,21 +136,28 @@ function App() {
           </Route>
           <Route path="/cart" element={<Cart />} />
         </Route>
-        <Route path="/admin/*" element={<AdminLayout />}>
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="product/add" element={<AddProduct />} />
-          <Route path="products" element={<Products />} />
-          <Route path="products/:id/edit" element={<EditProduct />} />
-          <Route path="category/add" element={<AddCategory />} />
-          <Route path="categories" element={<Categories />} />
-          <Route path="categories/:id/edit" element={<EditCategory />} />
-          <Route
-            path="products/:id/edit-image"
-            element={<EditImageProduct />}
-          />
-          <Route path="users" element={<Users />} />
-          <Route path="users/:id/edit" element={<EditUser />} />
-          <Route path="reviews" element={<Reviews />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/admin/*" element={<AdminLayout />}>
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="product/add" element={<AddProduct />} />
+            <Route path="products" element={<Products />} />
+            <Route path="products/:id/edit" element={<EditProduct />} />
+            <Route path="category/add" element={<AddCategory />} />
+            <Route path="categories" element={<Categories />} />
+            <Route path="categories/:id/edit" element={<EditCategory />} />
+            <Route
+              path="products/:id/edit-image"
+              element={<EditImageProduct />}
+            />
+            <Route path="users" element={<Users />} />
+            <Route path="users/:id/edit" element={<EditUser />} />
+            <Route path="reviews" element={<Reviews />} />
+            <Route
+              path="*"
+              element={<Navigate to="/admin/dashboard" replace />}
+            />
+          </Route>
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
       <FooterLayout />

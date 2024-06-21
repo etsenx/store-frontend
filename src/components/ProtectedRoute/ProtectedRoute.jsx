@@ -1,14 +1,22 @@
 import { useEffect } from "react";
 import { useNavigate, Outlet } from "react-router-dom";
-import Cookies from "js-cookie";
+import { useSelector } from "react-redux";
+
+const checkAdminPrivilege = (isAuthenticated, user) => {
+  return isAuthenticated && user?.privilege === "admin";
+};
 
 function ProtectedRoute() {
+
   const navigate = useNavigate();
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+
   useEffect(() => {
-    if (!Cookies.get("token")) {
-      navigate("/login");
+    if (!checkAdminPrivilege(isAuthenticated, user)) {
+      navigate("/", { state: { toast: { severity: 'error', summary: 'Error', detail: 'You do not have permission to access the admin area' } } });
     }
-  }, [navigate]);
+  }, [isAuthenticated, navigate, user]);
+
   return <Outlet />;
 }
 

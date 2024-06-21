@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import Button from '../Button/Button';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import logo from '../../assets/logo.png';
 import dropdown from '../../assets/dropdown-icon.png';
@@ -36,7 +36,6 @@ const useOutsideClick = (callback) => {
 
 function Navbar() {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [productSearch, setProductSearch] = useState('');
   const navigate = useNavigate();

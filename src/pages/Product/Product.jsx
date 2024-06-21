@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import Modal from "react-modal";
 import { useSelector } from "react-redux";
@@ -15,6 +15,7 @@ import { v4 as uuidv4 } from "uuid";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
+import ObjectId from 'bson-objectid';
 
 import ReviewStars from "../../components/ReviewStars/ReviewStars";
 import Reviews from "../../components/Reviews/Reviews";
@@ -41,6 +42,7 @@ function Product() {
   const [reviewsFirst, setReviewsFirst] = useState(0);
   const [reviewsRowsPerPage, setReviewsRowsPerPage] = useState(3);
   const [totalReviews, setTotalReviews] = useState(0);
+  const navigate = useNavigate();
 
   // const [fetchedReviews, setFetchedReviews] = useState([]);
 
@@ -140,6 +142,10 @@ function Product() {
   }, [id]);
 
   const fetchProductData = useCallback(async () => {
+    if (!ObjectId.isValid(id)) {
+      navigate('/', { state: { toast: { severity: 'error', summary: 'Error', detail: 'Product not found' } } });
+      return;
+    }
     try {
       const res = await axios.get(
         `${import.meta.env.VITE_REACT_API_URL}/product/${id}`

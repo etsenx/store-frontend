@@ -23,7 +23,7 @@ function Search() {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedRating, setSelectedRating] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -33,6 +33,9 @@ function Search() {
       .then((res) => {
         if (res.data.length === 0) {
           setProductNotFound(true);
+          setMinPrice(0);
+          setMaxPrice(0);
+          setCategories([]);
         } else {
           setProductNotFound(false);
           const categoryIds = res.data.map((product) => product.category);

@@ -24,6 +24,7 @@
     "@mui/material": "^5.15.16",
     "@reduxjs/toolkit": "^2.2.3",
     "axios": "^1.6.8",
+    "bson-objectid": "^2.0.4",
     "chart.js": "^4.4.2",
     "dotenv": "^16.4.5",
     "js-cookie": "^3.0.5",
