@@ -6,7 +6,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { login, logout } from "../redux/authSlice";
+import { login, logout } from "../redux/auth/authSlice";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faStar,

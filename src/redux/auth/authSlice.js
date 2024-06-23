@@ -20,11 +20,6 @@ const authSlice = createSlice({
   }
 })
 
-export const selectIsAdmin = (state) => {
-  const { isAuthenticated, user } = state.auth;
-  return isAuthenticated && user?.privilege === 'admin';
-};
-
 export const { login, logout } = authSlice.actions;
 export const selectAuth = (state) => state.auth;
 export default authSlice.reducer;

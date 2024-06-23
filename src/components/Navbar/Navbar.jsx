@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import Button from '../Button/Button';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import logo from '../../assets/logo.png';
 import dropdown from '../../assets/dropdown-icon.png';
@@ -13,6 +13,8 @@ import { fill } from '@cloudinary/url-gen/actions/resize';
 
 import './Navbar.css';
 import 'primeicons/primeicons.css';
+import { selectAuth } from '../../redux/auth/authSlice';
+import { selectCart } from '../../redux/cart/cartSlice';
 
 const useOutsideClick = (callback) => {
   const ref = useRef();
@@ -35,7 +37,8 @@ const useOutsideClick = (callback) => {
 };
 
 function Navbar() {
-  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const { isAuthenticated, user } = useSelector(selectAuth);
+  const { cartCount } = useSelector(selectCart);
   const [isOpen, setIsOpen] = useState(false);
   const [productSearch, setProductSearch] = useState('');
   const navigate = useNavigate();
@@ -89,7 +92,7 @@ function Navbar() {
       </div>
       <div className='right-container'>
         <Link to={isAuthenticated ? "/cart" : "/login"}>
-          Cart <span className='cart-count'>0</span>
+          Cart <span className='cart-count'>{cartCount}</span>
         </Link>
 
         {isAuthenticated ? (

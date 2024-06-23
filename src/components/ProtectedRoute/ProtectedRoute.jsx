@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { selectAuth } from "../../redux/auth/authSlice";
 
 const checkAdminPrivilege = (isAuthenticated, user) => {
   return isAuthenticated && user?.privilege === "admin";
@@ -9,7 +10,7 @@ const checkAdminPrivilege = (isAuthenticated, user) => {
 function ProtectedRoute() {
 
   const navigate = useNavigate();
-  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const { isAuthenticated, user } = useSelector(selectAuth);
 
   useEffect(() => {
     if (!checkAdminPrivilege(isAuthenticated, user)) {

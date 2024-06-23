@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 
 import Cookies from "js-cookie";
 
-import { login } from "../../redux/authSlice";
+import { login } from "../../redux/auth/authSlice";
 
 import { Toast } from "primereact/toast";
 

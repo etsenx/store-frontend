@@ -3,7 +3,7 @@ import Button from "../Button/Button";
 import { useRef, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../redux/authSlice";
+import { login } from "../../redux/auth/authSlice";
 
 import axios from "axios";
 
