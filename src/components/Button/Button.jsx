@@ -13,5 +13,6 @@ Button.propTypes = {
   children: PropTypes.string,
   className: PropTypes.string,
   onClick: PropTypes.func,
-  style: PropTypes.object
+  style: PropTypes.object,
+  isDisabled: PropTypes.bool,
 }

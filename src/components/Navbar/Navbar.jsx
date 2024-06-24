@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import Button from '../Button/Button';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import logo from '../../assets/logo.png';
 import dropdown from '../../assets/dropdown-icon.png';

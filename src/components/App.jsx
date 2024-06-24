@@ -29,7 +29,8 @@ import Product from "../pages/Product/Product";
 import Login from "./Authentication/Login";
 import Logout from "./Authentication/Logout";
 import Register from "./Authentication/Register";
-import ProtectedRoute from "./ProtectedRoute/ProtectedRoute";
+import UserRoute from "./ProtectedRoute/UserRoute";
+import AdminRoute from "./ProtectedRoute/AdminRoute"
 import ChangePassword from "./Authentication/ChangePassword";
 import ForgotPassword from "./Authentication/ForgotPassword";
 import UpdateProfile from "./Authentication/UpdateProfile";
@@ -127,7 +128,7 @@ function App() {
           <Route path="/logout" element={<Logout />} />
           <Route path="/register" element={<Register />} />
           <Route path="/password/forgot" element={<ForgotPassword />} />
-          <Route element={<ProtectedRoute />}>
+          <Route element={<UserRoute />}>
             <Route path="/password/change" element={<ChangePassword />} />
             <Route path="/me" element={<Profile />} />
             <Route path="/me/orders" element={<MyOrder />} />
@@ -136,7 +137,7 @@ function App() {
           </Route>
           <Route path="/cart" element={<Cart />} />
         </Route>
-        <Route element={<ProtectedRoute />}>
+        <Route element={<AdminRoute />}>
           <Route path="/admin/*" element={<AdminLayout />}>
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="product/add" element={<AddProduct />} />

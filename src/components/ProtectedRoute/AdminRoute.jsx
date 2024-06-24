@@ -7,7 +7,7 @@ const checkAdminPrivilege = (isAuthenticated, user) => {
   return isAuthenticated && user?.privilege === "admin";
 };
 
-function ProtectedRoute() {
+function AdminRoute() {
 
   const navigate = useNavigate();
   const { isAuthenticated, user } = useSelector(selectAuth);
@@ -21,4 +21,4 @@ function ProtectedRoute() {
   return <Outlet />;
 }
 
-export default ProtectedRoute;
+export default AdminRoute;

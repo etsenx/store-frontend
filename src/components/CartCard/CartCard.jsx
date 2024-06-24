@@ -1,17 +1,25 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { AdvancedImage } from "@cloudinary/react";
+import cld from "../../utils/CloudinaryInstance";
+import { fit } from "@cloudinary/url-gen/actions/resize";
+import PropTypes from "prop-types";
 import "./CartCard.css";
+import { Link } from "react-router-dom";
 
-function CartCard() {
+function CartCard(props) {
+  console.log(props);
+  const productImage = cld
+    .image(props.item.image.link)
+    .resize(fit().width(260).height(200));
   return (
     <div className="cart-card">
-      <img
-        src="https://dummyimage.com/260x200/000/fff.jpg"
-        className="cart-card__image"
-      />
-      <h2 className="cart-card__product-name">
-        Bose QuietComfort 35 II Wireless Bluetooth Headphones
-      </h2>
-      <p className="cart-card__price">$299</p>
+      <AdvancedImage cldImg={productImage} className="cart-card__image" />
+      <div className="cart-card__product-name-container">
+        <Link to={`/product/${props.item._id}`} style={{ color: "black" }}>
+          <h2 className="cart-card__product-name">{props.item.name}</h2>
+        </Link>
+      </div>
+      <p className="cart-card__price">${props.item.price}</p>
       <div className="cart-card__qty-button">
         <button
           className="product-page-quantity-button"
@@ -20,7 +28,9 @@ function CartCard() {
           {" "}
           -{" "}
         </button>
-        <span className="product-page-quantity-text">1</span>
+        <span className="product-page-quantity-text">
+          {props.item.quantity}
+        </span>
         <button
           className="product-page-quantity-button"
           style={{ backgroundColor: "#007bff" }}
@@ -39,5 +49,9 @@ function CartCard() {
     </div>
   );
 }
+
+CartCard.propTypes = {
+  item: PropTypes.object.isRequired,
+};
 
 export default CartCard;
