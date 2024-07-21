@@ -226,7 +226,7 @@ function Product() {
     if (!stockStatus) {
       return;
     }
-    if (!product.stock < requestCount) {
+    if (product.stock < requestCount) {
       toast.current.show({
         severity: "error",
         summary: "Insufficient Stock",

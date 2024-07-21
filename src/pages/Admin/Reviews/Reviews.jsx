@@ -54,7 +54,6 @@ function Reviews() {
         ...review,
         userName: userMapping[review.user] || review.user,
       }));
-      console.log(reviewsWithUsernames);
 
       setReviews(reviewsWithUsernames);
     } catch (err) {

@@ -27,7 +27,7 @@ function UpdateProfile() {
   const toast = useRef(null);
 
   function handleInputChange(e) {
-    const nameRegex = /[^A-Za-z]/;
+    const nameRegex = /[^A-Za-z\s]/;
     if (e.target.id === "name" && !nameRegex.test(e.target.value)) {
       setName(e.target.value);
     } else if (e.target.id === "email") {
