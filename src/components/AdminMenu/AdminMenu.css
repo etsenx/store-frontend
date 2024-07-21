@@ -1,0 +1,12 @@
+.admin-page__menu {
+  border: none;
+}
+/* 
+.admin-page__menu .p-menuitem-link {
+  padding-top: 10px;
+  padding-bottom: 10px;
+} */
+
+.admin-page__menu .active-menuitem {
+  background-color: aqua;
+}

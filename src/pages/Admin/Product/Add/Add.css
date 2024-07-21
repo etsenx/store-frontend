@@ -1,0 +1,53 @@
+.add-product-form {
+  width: 500px;
+  padding: 50px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.add-product-title {
+  margin-bottom: 20px;
+  font-size: 25px;
+}
+
+.add-product-form label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.add-product-form input {
+  display: block;
+  text-indent: 10px;
+  width: 100%;
+  height: 30px;
+  border: 1px solid rgba(216, 216, 216, 1);
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.add-product-button {
+  width: 100%;
+  height: 50px;
+  background-color: #fea736;
+  border: none;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.add-product-form .product-dropdown .p-dropdown-label {
+  font-size: 0.705rem;
+  padding: 0.55625rem;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+  padding: 0.6rem 1rem;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item .p-dropdown-item-label {
+  font-size: small;
+}

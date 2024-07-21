@@ -84,3 +84,29 @@
   row-gap: 40px;
   margin-bottom: 60px;
 }
+
+:global(.p-slider-handle-start) {
+  color: #14141a;
+  &::after {
+    content: var(--start);
+    transform: translate(0, -100%);
+    -webkit-transform: translate(0, -100%);
+    -moz-transform: translate(0, -100%);
+    -ms-transform: translate(0, -100%);
+    -o-transform: translate(0, -100%);
+    display: block;
+  }
+}
+
+:global(.p-slider-handle-end) {
+  color: #14141a;
+  &::after {
+    content: var(--end);
+    transform: translate(0, -100%);
+    -webkit-transform: translate(0, -100%);
+    -moz-transform: translate(0, -100%);
+    -ms-transform: translate(0, -100%);
+    -o-transform: translate(0, -100%);
+    display: block;
+}
+}

@@ -8,6 +8,49 @@
   gap: 80px;
 }
 
+.product-page-primary-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 600px;
+  height: 600px;
+}
+
+.product-page-secondary-image-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.product-page-secondary-image {
+  width: 110px;
+  height: 100px;
+  border: 1px solid grey;
+  border-radius: 10px;
+  padding: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+
+.product-page-secondary-image:hover {
+  cursor: pointer;
+}
+
+.product-page-secondary-image img {
+  max-width: 110px;
+  max-height: 100px;
+}
+
+.selected-image {
+  border-color: #fea736;
+  border-width: 2px;
+}
+
 .product-page-title {
   font-weight: 600;
 }
@@ -51,15 +94,28 @@
 
 .product-page-quantity-text {
   margin: 0 20px;
+  font-size: 16px; /* Match the font size of the span */
+  color: inherit; /* Match the text color of the span */
+  border: none; /* Remove the border */
+  background: none; /* Remove the background */
+  width: 40px; /* Adjust the width as needed */
+  text-align: center; /* Center the text */
+  outline: none; /* Remove the outline */
+  appearance: textfield;
+  font-family: 'Montserrat';
+
+}
+
+.product-page-quantity-text::-webkit-outer-spin-button,
+.product-page-quantity-text::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .product-page-add {
   margin-left: 30px;
   width: 170px;
   height: 50px;
-  background-color: #fea736;
-  color: white;
-  border: none;
   border-radius: 25px;
   font-size: 16px;
   -webkit-border-radius: 25px;
@@ -98,9 +154,6 @@
   margin-top: 30px;
   width: 250px;
   height: 50px;
-  background-color: #fea736;
-  color: white;
-  border: none;
   border-radius: 25px;
   -webkit-border-radius: 25px;
   -moz-border-radius: 25px;

@@ -1,0 +1,79 @@
+.edit-product-image-form {
+  width: 500px;
+  padding: 50px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.edit-product-image-title {
+  margin-bottom: 20px;
+  font-size: 25px;
+}
+
+.edit-product-image-form .upload-buttons {
+  width: 35px;
+  height: 11px;
+}
+
+.edit-product-image-form .cancel-button {
+  width: 35px;
+  height: 11px;
+}
+
+.uploaded-images-container {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  justify-items: center;
+}
+
+.uploaded-image {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.uploaded-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.uploaded-image:hover img {
+  opacity: 0.3;
+}
+
+.on-hover {
+  opacity: 0.3;
+}
+
+.uploaded-image-action-button-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 10px;
+}
+
+.action-button {
+  width: 35px;
+  height: 11px;
+  display: none;
+}
+
+.action-button:hover {
+  cursor: pointer;
+}
+
+.selected-button {
+  display: inline-flex;
+}
+
+.uploaded-image:hover .action-button {
+  display: inline-flex;
+}
+
+.uploaded-image-tooltip {
+  font-size: 11px;
+}
