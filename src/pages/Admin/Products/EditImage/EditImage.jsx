@@ -309,7 +309,7 @@ function EditImage() {
     try {
       const jwt = Cookies.get("token");
       const response = await axios.delete(
-        `${import.meta.env.VITE_REACT_API_URL}/products/delete-images`,
+        `${import.meta.env.VITE_REACT_API_URL}/products/images`,
         {
           headers: {
             Authorization: `Bearer ${jwt}`,
